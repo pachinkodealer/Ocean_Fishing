@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npx create-next-app@latest /c/Users/idcom/Micro_Saas --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(npx create-next-app@latest /c/Users/idcom/scenario-game-temp --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git)",
+      "Bash(cp -r /c/Users/idcom/scenario-game-temp/. /c/Users/idcom/Micro_Saas/)",
+      "Bash(rm -rf /c/Users/idcom/scenario-game-temp)",
+      "Bash(npm install:*)",
+      "Bash(npx shadcn@latest init --defaults)"
+    ]
+  }
+}
