@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { analyzeChart } from '@/lib/ai/analyzeChart'
-import { getCurrentPrice, validateTicker } from '@/lib/binance/price'
+import { getCurrentPrice } from '@/lib/binance/price'
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 const MAX_SIZE_BYTES = 5 * 1024 * 1024 // 5MB
@@ -51,12 +51,6 @@ export async function POST(request: NextRequest) {
 
   if (screenshot.size > MAX_SIZE_BYTES) {
     return NextResponse.json({ error: 'Image must be under 5MB' }, { status: 400 })
-  }
-
-  // Validate ticker against Binance
-  const isValidTicker = await validateTicker(ticker)
-  if (!isValidTicker) {
-    return NextResponse.json({ error: `Invalid ticker: ${ticker}` }, { status: 400 })
   }
 
   // Upload screenshot to Supabase Storage

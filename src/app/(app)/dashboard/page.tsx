@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import type { Database } from '@/types/database'
@@ -28,7 +27,7 @@ export default async function DashboardPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Dashboard</h1>
-        <Link href="/play" className={buttonVariants()}>Make a Call</Link>
+        <Link href="/play" className="inline-flex items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/80">Make a Call</Link>
       </div>
 
       {/* Stats */}
@@ -103,7 +102,7 @@ export default async function DashboardPage() {
               <p className="font-semibold">Free Plan — 3 calls/day</p>
               <p className="text-sm text-muted-foreground">Upgrade for unlimited calls + advanced analysis</p>
             </div>
-            <Link href="/upgrade" className={buttonVariants({ variant: 'outline' }) + ' border-yellow-500/40 text-yellow-400'}>Upgrade $9/mo</Link>
+            <Link href="/upgrade" className="inline-flex items-center justify-center rounded-lg border border-yellow-500/40 px-4 py-2 text-sm font-medium text-yellow-400 transition-colors hover:bg-yellow-500/10">Upgrade $9/mo</Link>
           </CardContent>
         </Card>
       )}
