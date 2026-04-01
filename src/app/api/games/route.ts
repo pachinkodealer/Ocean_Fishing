@@ -13,12 +13,13 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   // Check rate limit for free users
-  const { data: profile } = await supabase
+  const { data: profileData } = await supabase
     .from('profiles')
     .select('plan')
     .eq('id', user.id)
     .single()
 
+  const profile = profileData as { plan: string } | null
   if (profile?.plan === 'free') {
     const today = new Date()
     today.setHours(0, 0, 0, 0)

@@ -18,12 +18,13 @@ export async function POST(
   }
 
   // Verify game exists and is pending
-  const { data: game } = await supabase
+  const { data: gameData } = await supabase
     .from('games')
     .select('id, status')
     .eq('id', gameId)
     .single()
 
+  const game = gameData as { id: string; status: string } | null
   if (!game) return NextResponse.json({ error: 'Game not found' }, { status: 404 })
   if (game.status !== 'pending') {
     return NextResponse.json({ error: 'Game already scored' }, { status: 409 })
@@ -42,7 +43,7 @@ export async function POST(
   }
 
   const service = createServiceClient()
-  const { data: prediction, error } = await service
+  const { data: prediction, error } = await (service as any)
     .from('predictions')
     .insert({
       game_id: gameId,

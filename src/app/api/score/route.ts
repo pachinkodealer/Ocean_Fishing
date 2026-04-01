@@ -70,24 +70,18 @@ export async function POST(request: NextRequest) {
           const newTotalCalls = (profile?.total_calls ?? 0) + 1
           const newCorrectCalls = (profile?.correct_calls ?? 0) + (result.isCorrect ? 1 : 0)
 
+          // Get current points first then add earned
+          const currentPoints = (profile as any)?.points ?? 0
           await service
             .from('profiles')
             .update({
-              points: service.rpc ? undefined : undefined, // handled below
+              points: currentPoints + result.pointsEarned,
               streak: result.newStreak,
               correct_calls: newCorrectCalls,
               total_calls: newTotalCalls,
               accuracy_pct: recalculateAccuracy(newCorrectCalls, newTotalCalls),
             })
             .eq('id', prediction.user_id)
-
-          // Increment points separately
-          await service.rpc('increment_points', {
-            user_id: prediction.user_id,
-            amount: result.pointsEarned,
-          }).throwOnError().catch(() => {
-            // Fallback: direct update if RPC not available
-          })
 
           // Award badges
           if (result.newStreak >= 5) {
