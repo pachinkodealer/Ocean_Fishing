@@ -33,8 +33,6 @@ interface ChartData {
   aiCall: string
   aiTarget: number
   keyLevels: KeyLevel[]
-  bullTarget: number | null
-  bearTarget: number | null
   status: string
 }
 
@@ -51,7 +49,9 @@ function formatTime(ms: number) {
 }
 
 function formatPrice(p: number) {
-  return p >= 1000 ? `$${p.toLocaleString(undefined, { maximumFractionDigits: 0 })}` : `$${p.toFixed(2)}`
+  return p >= 1000
+    ? `$${p.toLocaleString(undefined, { maximumFractionDigits: 0 })}`
+    : `$${p.toFixed(2)}`
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,8 +85,8 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
   if (loading) {
     return (
       <div className="rounded-xl border border-border p-6 animate-pulse">
-        <div className="h-4 w-32 bg-muted rounded mb-4" />
-        <div className="h-48 bg-muted rounded" />
+        <div className="h-4 w-40 bg-muted rounded mb-4" />
+        <div className="h-56 bg-muted rounded" />
       </div>
     )
   }
@@ -95,10 +95,8 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
 
   const { klines, entryPrice, resolvedPrice, aiCall, aiTarget, keyLevels } = data
 
-  // Build chart data — use close price for area
   const chartData = klines.map(k => ({ ...k, value: k.close }))
 
-  // Determine price range with padding
   const allPrices = [
     ...klines.flatMap(k => [k.high, k.low]),
     entryPrice,
@@ -108,66 +106,75 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
   ]
   const minPrice = Math.min(...allPrices)
   const maxPrice = Math.max(...allPrices)
-  const pad = (maxPrice - minPrice) * 0.1
+  const pad = (maxPrice - minPrice) * 0.12
   const yDomain = [minPrice - pad, maxPrice + pad]
 
   const isUp = resolvedPrice ? resolvedPrice >= entryPrice : aiCall === 'bull'
   const areaColor = isUp ? '#22c55e' : '#ef4444'
   const gradientId = `gradient-${gameId}`
 
+  const directionPts = isCorrect ? 10 : 0
+  const targetPts = hitTarget ? 25 : 0
+  const callLabel = userCall ? userCall.toUpperCase() : '—'
+
   return (
     <div className="rounded-xl border border-border overflow-hidden">
-      {/* Score breakdown header */}
-      <div className="px-6 py-4 border-b border-border bg-muted/30">
-        <div className="flex items-center justify-between flex-wrap gap-3">
-          <h3 className="font-semibold text-sm">4H Result</h3>
-          <div className="flex items-center gap-4 text-sm flex-wrap">
-            {/* Direction */}
-            <div className="flex items-center gap-1.5">
-              <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                isCorrect === true ? 'bg-green-500/15 text-green-500' :
-                isCorrect === false ? 'bg-red-500/15 text-red-500' :
-                'bg-muted text-muted-foreground'
-              }`}>
-                {userCall ? userCall.toUpperCase() : '—'}
-              </span>
-              <span className="text-muted-foreground text-xs">
-                {isCorrect === true ? '+10 pts ✓' : isCorrect === false ? '0 pts ✗' : ''}
-              </span>
-            </div>
-            {/* Target */}
-            {hitTarget !== null && (
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs text-muted-foreground">Target</span>
-                <span className={`text-xs font-semibold ${hitTarget ? 'text-green-500' : 'text-muted-foreground'}`}>
-                  {hitTarget ? '+25 pts ✓' : '0 pts ✗'}
+
+      {/* ── Score header ── */}
+      <div className="px-5 py-4 border-b border-border bg-muted/30 space-y-3">
+        {/* Title row */}
+        <div className="flex items-center justify-between">
+          <h3 className="font-semibold text-sm tracking-tight">4H Result</h3>
+          <span className={`text-lg font-mono font-bold ${(pointsEarned ?? 0) > 0 ? 'text-green-500' : 'text-muted-foreground'}`}>
+            {(pointsEarned ?? 0) > 0 ? `+${pointsEarned}` : pointsEarned ?? 0} pts
+          </span>
+        </div>
+
+        {/* "Result of BULL/BEAR:" breakdown */}
+        <div className="text-sm text-muted-foreground">
+          <span className="font-medium text-foreground">Result of {callLabel}:</span>
+          <span className="ml-2 inline-flex items-center gap-1">
+            {isCorrect ? '✅' : '❌'}
+            <span>Direction</span>
+            <span className={`font-semibold ${isCorrect ? 'text-green-500' : 'text-foreground'}`}>
+              {isCorrect ? `+${directionPts} pts` : '0 pts'}
+            </span>
+          </span>
+          <span className="mx-2 text-border">·</span>
+          <span className="inline-flex items-center gap-1">
+            {hitTarget ? '✅' : '❌'}
+            <span>Target</span>
+            <span className={`font-semibold ${hitTarget ? 'text-green-500' : 'text-foreground'}`}>
+              {hitTarget ? `+${targetPts} pts` : '0 pts'}
+            </span>
+          </span>
+          {(pointsEarned ?? 0) > directionPts + targetPts && (
+            <>
+              <span className="mx-2 text-border">·</span>
+              <span className="inline-flex items-center gap-1">
+                🔥
+                <span>Streak bonus</span>
+                <span className="font-semibold text-green-500">
+                  +{(pointsEarned ?? 0) - directionPts - targetPts} pts
                 </span>
-              </div>
-            )}
-            {/* Total */}
-            {pointsEarned !== null && (
-              <div className="font-mono font-bold text-base">
-                <span className={pointsEarned > 0 ? 'text-green-500' : 'text-muted-foreground'}>
-                  +{pointsEarned} pts
-                </span>
-              </div>
-            )}
-          </div>
+              </span>
+            </>
+          )}
         </div>
       </div>
 
-      {/* Chart */}
+      {/* ── Chart ── */}
       <div className="p-4">
-        <ResponsiveContainer width="100%" height={220}>
-          <AreaChart data={chartData} margin={{ top: 8, right: 16, left: 0, bottom: 0 }}>
+        <ResponsiveContainer width="100%" height={240}>
+          <AreaChart data={chartData} margin={{ top: 10, right: 12, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id={gradientId} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor={areaColor} stopOpacity={0.25} />
+                <stop offset="5%" stopColor={areaColor} stopOpacity={0.2} />
                 <stop offset="95%" stopColor={areaColor} stopOpacity={0.02} />
               </linearGradient>
             </defs>
 
-            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.5} />
+            <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" opacity={0.4} />
 
             <XAxis
               dataKey="time"
@@ -188,22 +195,15 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
 
             <Tooltip content={<CustomTooltip />} />
 
-            {/* Key levels — subtle */}
+            {/* Key levels — no inline labels, colour only */}
             {keyLevels.map((lvl, i) => (
               <ReferenceLine
                 key={i}
                 y={lvl.price}
                 stroke={lvl.type === 'resistance' ? '#f97316' : '#3b82f6'}
                 strokeDasharray="4 4"
-                strokeOpacity={0.5}
+                strokeOpacity={0.45}
                 strokeWidth={1}
-                label={{
-                  value: `${lvl.type === 'resistance' ? '▲' : '▼'} ${formatPrice(lvl.price)}`,
-                  position: 'insideTopRight',
-                  fontSize: 9,
-                  fill: lvl.type === 'resistance' ? '#f97316' : '#3b82f6',
-                  opacity: 0.8,
-                }}
               />
             ))}
 
@@ -215,9 +215,9 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
               strokeWidth={1.5}
               label={{
                 value: `Entry ${formatPrice(entryPrice)}`,
-                position: 'insideBottomRight',
+                position: 'insideBottomLeft',
                 fontSize: 10,
-                fill: 'hsl(var(--foreground))',
+                fill: 'hsl(var(--muted-foreground))',
               }}
             />
 
@@ -228,14 +228,14 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
               strokeDasharray="4 4"
               strokeWidth={1.5}
               label={{
-                value: `AI ${formatPrice(aiTarget)}`,
+                value: `AI target ${formatPrice(aiTarget)}`,
                 position: 'insideTopLeft',
                 fontSize: 10,
                 fill: '#a855f7',
               }}
             />
 
-            {/* Resolved price */}
+            {/* Resolved close */}
             {resolvedPrice && (
               <ReferenceLine
                 y={resolvedPrice}
@@ -243,7 +243,7 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
                 strokeWidth={2}
                 label={{
                   value: `Close ${formatPrice(resolvedPrice)}`,
-                  position: 'insideTopRight',
+                  position: isUp ? 'insideTopLeft' : 'insideBottomLeft',
                   fontSize: 10,
                   fill: isUp ? '#22c55e' : '#ef4444',
                   fontWeight: 'bold',
@@ -264,26 +264,26 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
         </ResponsiveContainer>
 
         {/* Legend */}
-        <div className="flex flex-wrap gap-4 mt-2 justify-center text-xs text-muted-foreground">
-          <span className="flex items-center gap-1">
-            <span className="inline-block w-4 h-px bg-foreground border-dashed border-t-2" />
+        <div className="flex flex-wrap gap-x-5 gap-y-1 mt-3 justify-center text-xs text-muted-foreground">
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t-2 border-dashed border-foreground/50" />
             Entry
           </span>
-          <span className="flex items-center gap-1">
-            <span className="inline-block w-4 h-px bg-purple-500" />
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t-2 border-purple-500" />
             AI Target
           </span>
-          <span className="flex items-center gap-1">
-            <span className="inline-block w-4 h-px bg-orange-400" />
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t-2 border-dashed border-orange-400" />
             Resistance
           </span>
-          <span className="flex items-center gap-1">
-            <span className="inline-block w-4 h-px bg-blue-500" />
+          <span className="flex items-center gap-1.5">
+            <span className="inline-block w-5 border-t-2 border-dashed border-blue-500" />
             Support
           </span>
           {resolvedPrice && (
-            <span className="flex items-center gap-1">
-              <span className={`inline-block w-4 h-px ${isUp ? 'bg-green-500' : 'bg-red-500'}`} />
+            <span className="flex items-center gap-1.5">
+              <span className={`inline-block w-5 border-t-2 ${isUp ? 'border-green-500' : 'border-red-500'}`} />
               Close
             </span>
           )}
