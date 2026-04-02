@@ -112,3 +112,41 @@ export async function getKlineAtTime(
 
   throw new Error(`Could not fetch kline data for ${sym} from any source`)
 }
+
+export interface KlinePoint {
+  time: number   // unix ms
+  open: number
+  high: number
+  low: number
+  close: number
+}
+
+export async function getKlines(
+  ticker: string,
+  interval: string,
+  startTimeMs: number,
+  limit: number = 16
+): Promise<KlinePoint[]> {
+  const sym = ticker.toUpperCase()
+
+  for (const base of [BINANCE_BASE, BINANCE_US_BASE]) {
+    try {
+      const url = `${base}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=${limit}`
+      const res = await fetchWithTimeout(url, 10000)
+      if (res.ok) {
+        const data = await res.json()
+        if (Array.isArray(data) && data.length > 0) {
+          return data.map((k: unknown[]) => ({
+            time: Number(k[0]),
+            open: parseFloat(k[1] as string),
+            high: parseFloat(k[2] as string),
+            low: parseFloat(k[3] as string),
+            close: parseFloat(k[4] as string),
+          }))
+        }
+      }
+    } catch { /* try next */ }
+  }
+
+  return []
+}

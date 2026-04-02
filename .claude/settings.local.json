@@ -7,7 +7,15 @@
       "Bash(cp -r /c/Users/idcom/scenario-game-temp/. /c/Users/idcom/Micro_Saas/)",
       "Bash(rm -rf /c/Users/idcom/scenario-game-temp)",
       "Bash(npm install:*)",
-      "Bash(npx shadcn@latest init --defaults)"
+      "Bash(npx shadcn@latest init --defaults)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git remote:*)",
+      "Bash(git rm:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(npx next:*)"
     ]
   }
 }

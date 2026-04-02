@@ -5,6 +5,7 @@ import { PriceLevels } from '@/components/chart/PriceLevels'
 import { AIvsYou } from '@/components/game/AIvsYou'
 import { CountdownTimer } from '@/components/game/CountdownTimer'
 import { GamePredictionSection } from './GamePredictionSection'
+import { ResultsChart } from '@/components/game/ResultsChart'
 import type { Database } from '@/types/database'
 
 type Game = Database['public']['Tables']['games']['Row']
@@ -77,6 +78,17 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
         <ScenarioCard type="bull" scenario={game.bull_scenario as any} currentPrice={game.current_price} />
         <ScenarioCard type="bear" scenario={game.bear_scenario as any} currentPrice={game.current_price} />
       </div>
+
+      {/* Results chart — only when scored */}
+      {game.status === 'scored' && prediction && (
+        <ResultsChart
+          gameId={gameId}
+          userCall={(prediction.direction ?? null) as 'bull' | 'bear' | null}
+          isCorrect={prediction.is_correct ?? null}
+          pointsEarned={prediction.points_earned ?? null}
+          hitTarget={prediction.hit_target ?? null}
+        />
+      )}
 
       {/* Prediction section */}
       {!prediction && game.status === 'pending' ? (
