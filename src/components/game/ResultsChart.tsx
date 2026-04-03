@@ -215,9 +215,10 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
               strokeWidth={1.5}
               label={{
                 value: `Entry ${formatPrice(entryPrice)}`,
-                position: 'insideBottomLeft',
+                position: 'insideTopLeft',
                 fontSize: 10,
                 fill: 'hsl(var(--muted-foreground))',
+                dy: -12,
               }}
             />
 
