@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 
 export function UpgradeButton({ isPro }: { isPro: boolean }) {
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   if (isPro) {
     return (
@@ -16,22 +17,32 @@ export function UpgradeButton({ isPro }: { isPro: boolean }) {
 
   async function handleUpgrade() {
     setLoading(true)
+    setError(null)
     try {
       const res = await fetch('/api/stripe/checkout', { method: 'POST' })
-      const { url } = await res.json()
-      if (url) window.location.href = url
-    } catch {
+      const data = await res.json()
+      if (data.url) {
+        window.location.href = data.url
+      } else {
+        setError(data.error ?? 'Something went wrong')
+        setLoading(false)
+      }
+    } catch (e) {
+      setError('Network error — please try again')
       setLoading(false)
     }
   }
 
   return (
-    <Button
-      className="w-full bg-yellow-400 text-black hover:bg-yellow-300"
-      onClick={handleUpgrade}
-      disabled={loading}
-    >
-      {loading ? 'Redirecting...' : 'Upgrade to Pro — $3/mo'}
-    </Button>
+    <div className="space-y-2">
+      <Button
+        className="w-full bg-yellow-400 text-black hover:bg-yellow-300"
+        onClick={handleUpgrade}
+        disabled={loading}
+      >
+        {loading ? 'Redirecting...' : 'Upgrade to Pro — $3/mo'}
+      </Button>
+      {error && <p className="text-xs text-destructive text-center">{error}</p>}
+    </div>
   )
 }
