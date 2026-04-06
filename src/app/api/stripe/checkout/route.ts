@@ -7,6 +7,10 @@ export async function POST() {
     if (!process.env.STRIPE_SECRET_KEY) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
     }
+    // Temporary debug — remove after fixing
+    const priceId = process.env.STRIPE_PRICE_ID ?? 'NOT SET'
+    const keyPrefix = (process.env.STRIPE_SECRET_KEY ?? '').slice(0, 12)
+    console.log(`[checkout] key=${keyPrefix} price=${priceId}`)
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
     const supabase = await createClient()
