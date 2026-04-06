@@ -20,7 +20,8 @@ export function UpgradeButton({ isPro }: { isPro: boolean }) {
     setError(null)
     try {
       const res = await fetch('/api/stripe/checkout', { method: 'POST' })
-      const data = await res.json()
+      const text = await res.text()
+      const data = JSON.parse(text)
       if (data.url) {
         window.location.href = data.url
       } else {
@@ -28,7 +29,7 @@ export function UpgradeButton({ isPro }: { isPro: boolean }) {
         setLoading(false)
       }
     } catch (e) {
-      setError('Network error — please try again')
+      setError('Request failed — check Stripe env vars in Vercel')
       setLoading(false)
     }
   }
