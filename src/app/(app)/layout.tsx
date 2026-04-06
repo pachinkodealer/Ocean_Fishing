@@ -28,7 +28,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
             {(profile?.streak ?? 0) > 0 && (
               <span className="text-orange-400 text-xs font-semibold">{profile?.streak} 🔥</span>
             )}
-            <span className="text-muted-foreground">{profile?.username}</span>
+            <Link href={`/profile/${profile?.username}`} className="text-muted-foreground hover:text-foreground transition-colors">
+              {profile?.username}
+            </Link>
           </div>
         </div>
       </nav>

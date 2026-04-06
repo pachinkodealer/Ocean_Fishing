@@ -9,9 +9,26 @@ export function UpgradeButton({ isPro }: { isPro: boolean }) {
 
   if (isPro) {
     return (
-      <Button className="w-full" variant="outline" disabled>
-        You&apos;re on Pro ✓
-      </Button>
+      <div className="space-y-2">
+        <Button className="w-full" variant="outline" disabled>
+          You&apos;re on Pro ✓
+        </Button>
+        <Button
+          className="w-full"
+          variant="ghost"
+          onClick={async () => {
+            setLoading(true)
+            const res = await fetch('/api/stripe/portal', { method: 'POST' })
+            const data = await res.json()
+            if (data.url) window.location.href = data.url
+            else { setError(data.error ?? 'Could not open portal'); setLoading(false) }
+          }}
+          disabled={loading}
+        >
+          {loading ? 'Loading...' : 'Manage / Cancel Subscription'}
+        </Button>
+        {error && <p className="text-xs text-destructive text-center">{error}</p>}
+      </div>
     )
   }
 
