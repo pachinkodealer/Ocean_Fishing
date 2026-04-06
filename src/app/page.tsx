@@ -120,7 +120,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
-        <span>Free: 3 calls/day · Pro: unlimited at $9/mo</span>
+        <span>Free: 3 calls/day · Pro: unlimited at $3/mo</span>
         <div className="flex gap-4">
           <Link href="/leaderboard" className="hover:text-foreground transition-colors">Leaderboard</Link>
           <Link href="/signup" className="hover:text-foreground transition-colors">Sign Up</Link>

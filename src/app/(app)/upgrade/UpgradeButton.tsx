@@ -31,7 +31,7 @@ export function UpgradeButton({ isPro }: { isPro: boolean }) {
       onClick={handleUpgrade}
       disabled={loading}
     >
-      {loading ? 'Redirecting...' : 'Upgrade to Pro — $9/mo'}
+      {loading ? 'Redirecting...' : 'Upgrade to Pro — $3/mo'}
     </Button>
   )
 }

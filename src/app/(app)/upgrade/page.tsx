@@ -62,7 +62,7 @@ export default async function UpgradePage() {
                 ? <Badge className="bg-yellow-400 text-black hover:bg-yellow-400">Active</Badge>
                 : <Badge className="bg-yellow-400 text-black hover:bg-yellow-400">Recommended</Badge>}
             </CardTitle>
-            <p className="text-2xl font-bold">$9 <span className="text-base font-normal text-muted-foreground">/month</span></p>
+            <p className="text-2xl font-bold">$3 <span className="text-base font-normal text-muted-foreground">/month</span></p>
           </CardHeader>
           <CardContent className="space-y-4">
             <ul className="space-y-2">
