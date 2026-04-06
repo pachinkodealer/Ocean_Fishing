@@ -102,7 +102,7 @@ export default async function DashboardPage() {
               <p className="font-semibold">Free Plan — 3 calls/day</p>
               <p className="text-sm text-muted-foreground">Upgrade for unlimited calls + advanced analysis</p>
             </div>
-            <Link href="/upgrade" className="inline-flex items-center justify-center rounded-lg border border-yellow-500/40 px-4 py-2 text-sm font-medium text-yellow-400 transition-colors hover:bg-yellow-500/10">Upgrade $9/mo</Link>
+            <Link href="/upgrade" className="inline-flex items-center justify-center rounded-lg border border-yellow-500/40 px-4 py-2 text-sm font-medium text-yellow-400 transition-colors hover:bg-yellow-500/10">Upgrade $3/mo</Link>
           </CardContent>
         </Card>
       )}
