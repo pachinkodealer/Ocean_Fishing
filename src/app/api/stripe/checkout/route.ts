@@ -7,10 +7,8 @@ export async function POST() {
     if (!process.env.STRIPE_SECRET_KEY) {
       return NextResponse.json({ error: 'Stripe not configured' }, { status: 500 })
     }
-    // Temporary debug — remove after fixing
     const priceId = process.env.STRIPE_PRICE_ID ?? 'NOT SET'
-    const keyPrefix = (process.env.STRIPE_SECRET_KEY ?? '').slice(0, 12)
-    console.log(`[checkout] key=${keyPrefix} price=${priceId}`)
+    const keyPrefix = (process.env.STRIPE_SECRET_KEY ?? '').slice(0, 14)
 
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
     const supabase = await createClient()
@@ -33,6 +31,8 @@ export async function POST() {
     return NextResponse.json({ url: session.url })
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Checkout failed'
-    return NextResponse.json({ error: message }, { status: 500 })
+    const priceId = process.env.STRIPE_PRICE_ID ?? 'NOT SET'
+    const keyPrefix = (process.env.STRIPE_SECRET_KEY ?? '').slice(0, 14)
+    return NextResponse.json({ error: message, debug: { keyPrefix, priceId } }, { status: 500 })
   }
 }
