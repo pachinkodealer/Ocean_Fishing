@@ -6,6 +6,7 @@ import { AIvsYou } from '@/components/game/AIvsYou'
 import { CountdownTimer } from '@/components/game/CountdownTimer'
 import { GamePredictionSection } from './GamePredictionSection'
 import { ResultsChart } from '@/components/game/ResultsChart'
+import { ShareButton } from '@/components/game/ShareButton'
 import type { Database } from '@/types/database'
 
 type Game = Database['public']['Tables']['games']['Row']
@@ -56,19 +57,24 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
           </div>
         )}
         {game.status === 'scored' && (
-          <div className="text-center">
-            <p className="text-xs text-muted-foreground">Resolved at</p>
-            <p className="font-mono font-bold text-xl">${game.resolved_price?.toLocaleString()}</p>
+          <div className="flex items-center gap-4">
+            <div className="text-center">
+              <p className="text-xs text-muted-foreground">Resolved at</p>
+              <p className="font-mono font-bold text-xl">${game.resolved_price?.toLocaleString()}</p>
+            </div>
+            {prediction && <ShareButton gameId={gameId} />}
           </div>
         )}
       </div>
 
-      {/* Chart screenshot */}
-      <img
-        src={game.screenshot_url}
-        alt={`${game.ticker} chart`}
-        className="w-full rounded-xl border border-border object-contain max-h-96"
-      />
+      {/* Chart screenshot — not shown for daily challenge games */}
+      {game.screenshot_url && (
+        <img
+          src={game.screenshot_url}
+          alt={`${game.ticker} chart`}
+          className="w-full rounded-xl border border-border object-contain max-h-96"
+        />
+      )}
 
       {/* Key levels */}
       <PriceLevels levels={game.key_levels as any[]} currentPrice={game.current_price} />

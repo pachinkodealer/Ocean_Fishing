@@ -51,13 +51,15 @@ export type Database = {
           resolve_at: string
           resolved_price: number | null
           created_at: string
+          is_daily: boolean
+          daily_challenge_id: string | null
         }
         Insert: {
           id?: string
           user_id: string
           ticker: string
           timeframe: string
-          screenshot_url: string
+          screenshot_url?: string
           current_price: number
           key_levels: Json
           bull_scenario: Json
@@ -70,8 +72,45 @@ export type Database = {
           resolve_at: string
           resolved_price?: number | null
           created_at?: string
+          is_daily?: boolean
+          daily_challenge_id?: string | null
         }
         Update: Partial<Database['public']['Tables']['games']['Insert']>
+      }
+      daily_challenges: {
+        Row: {
+          id: string
+          challenge_date: string
+          ticker: string
+          timeframe: string
+          current_price: number
+          key_levels: Json
+          bull_scenario: Json
+          bear_scenario: Json
+          ai_call: string
+          ai_target: number
+          ai_reasoning: string
+          confidence: number
+          resolve_at: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          challenge_date: string
+          ticker: string
+          timeframe?: string
+          current_price: number
+          key_levels: Json
+          bull_scenario: Json
+          bear_scenario: Json
+          ai_call: string
+          ai_target: number
+          ai_reasoning: string
+          confidence: number
+          resolve_at: string
+          created_at?: string
+        }
+        Update: Partial<Database['public']['Tables']['daily_challenges']['Insert']>
       }
       predictions: {
         Row: {

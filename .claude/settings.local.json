@@ -16,7 +16,9 @@
       "Bash(git checkout:*)",
       "Bash(git merge:*)",
       "Bash(npx next:*)",
-      "Bash(cat src/app/\\\\\\(app\\\\\\)/upgrade/UpgradeButton.tsx)"
+      "Bash(cat src/app/\\\\\\(app\\\\\\)/upgrade/UpgradeButton.tsx)",
+      "Bash(npm i:*)",
+      "Bash(npm run:*)"
     ]
   }
 }
