@@ -18,7 +18,8 @@
       "Bash(npx next:*)",
       "Bash(cat src/app/\\\\\\(app\\\\\\)/upgrade/UpgradeButton.tsx)",
       "Bash(npm i:*)",
-      "Bash(npm run:*)"
+      "Bash(npm run:*)",
+      "Bash(npx vercel:*)"
     ]
   }
 }
