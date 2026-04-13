@@ -40,8 +40,8 @@ export async function POST(request: NextRequest) {
   // Run text-based AI analysis
   const analysis = await analyzeDailyChallenge(DAILY_TICKER, DAILY_TIMEFRAME, klines)
 
-  // Resolve 4 hours from now (same as regular games)
-  const resolveAt = new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString()
+  // Resolve at 8pm UTC today — gives users all day to participate
+  const resolveAt = new Date(`${today}T20:00:00Z`).toISOString()
 
   const { data: challenge, error } = await service
     .from('daily_challenges')
