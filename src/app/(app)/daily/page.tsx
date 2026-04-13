@@ -93,6 +93,25 @@ export default async function DailyPage() {
         )}
       </div>
 
+      {/* How it works */}
+      <div className="grid grid-cols-3 gap-3 text-center text-sm">
+        <div className="rounded-xl border border-border bg-card px-4 py-3">
+          <div className="text-lg mb-1">🤖</div>
+          <p className="font-medium text-xs">AI picks BTC</p>
+          <p className="text-muted-foreground text-xs mt-0.5">New challenge every day at midnight UTC</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card px-4 py-3">
+          <div className="text-lg mb-1">🎯</div>
+          <p className="font-medium text-xs">You call it</p>
+          <p className="text-muted-foreground text-xs mt-0.5">Bull or Bear — submit before 8pm UTC</p>
+        </div>
+        <div className="rounded-xl border border-border bg-card px-4 py-3">
+          <div className="text-lg mb-1">🏆</div>
+          <p className="font-medium text-xs">Score &amp; rank</p>
+          <p className="text-muted-foreground text-xs mt-0.5">Results scored at 8pm · beat the AI to win</p>
+        </div>
+      </div>
+
       {/* No challenge state */}
       {!challenge && (
         <div className="rounded-xl border border-border bg-card p-12 text-center">
