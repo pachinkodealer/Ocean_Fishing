@@ -78,8 +78,10 @@ export default async function DailyPage() {
                   <p className="text-xs text-muted-foreground">Resolved at</p>
                   <p className="font-mono font-bold text-xl">${userGame.resolved_price.toLocaleString()}</p>
                 </div>
-              ) : (
+              ) : userGame ? (
                 <span className="text-xs text-muted-foreground">Scoring...</span>
+              ) : (
+                <span className="text-xs text-muted-foreground">Closed</span>
               )
             ) : (
               <div>
