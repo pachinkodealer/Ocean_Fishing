@@ -8,6 +8,7 @@ import { ResultsChart } from '@/components/game/ResultsChart'
 import { ShareButton } from '@/components/game/ShareButton'
 import { JoinDailyButton } from '@/components/daily/JoinDailyButton'
 import { DailyLeaderboard } from '@/components/daily/DailyLeaderboard'
+import { TodayPlayers } from '@/components/daily/TodayPlayers'
 import Link from 'next/link'
 
 export default async function DailyPage() {
@@ -184,6 +185,9 @@ export default async function DailyPage() {
 
           {/* Daily Leaderboard */}
           <DailyLeaderboard challengeId={challenge.id} />
+
+          {/* Today's Players */}
+          <TodayPlayers />
         </>
       )}
     </div>
