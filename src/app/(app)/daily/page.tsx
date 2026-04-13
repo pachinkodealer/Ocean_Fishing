@@ -103,12 +103,12 @@ export default async function DailyPage() {
         <div className="rounded-xl border border-border bg-card px-4 py-3">
           <div className="text-lg mb-1">🎯</div>
           <p className="font-medium text-xs">You call it</p>
-          <p className="text-muted-foreground text-xs mt-0.5">Bull or Bear — submit before 8pm UTC</p>
+          <p className="text-muted-foreground text-xs mt-0.5">Bull or Bear — submit before 8pm UTC (4pm EST)</p>
         </div>
         <div className="rounded-xl border border-border bg-card px-4 py-3">
           <div className="text-lg mb-1">🏆</div>
           <p className="font-medium text-xs">Score &amp; rank</p>
-          <p className="text-muted-foreground text-xs mt-0.5">Results scored at 8pm · beat the AI to win</p>
+          <p className="text-muted-foreground text-xs mt-0.5">Results scored at 8pm UTC (4pm EST) · beat the AI to win</p>
         </div>
       </div>
 
