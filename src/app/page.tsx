@@ -1,7 +1,4 @@
-'use client'
-
 import Link from 'next/link'
-import { buttonVariants } from '@/components/ui/button'
 
 const FREE_FEATURES = ['3 calls per day', 'AI scenario analysis', 'Leaderboard access']
 const PRO_FEATURES = ['Unlimited calls per day', 'AI scenario analysis', 'Leaderboard access', 'Priority scoring', 'Pro badge on leaderboard']
@@ -150,7 +147,7 @@ export default function LandingPage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/signup" className={buttonVariants({ variant: 'outline', size: 'sm' }) + ' w-full justify-center'}>
+              <Link href="/signup" className="inline-flex items-center justify-center w-full border border-white/20 text-white hover:bg-white/10 text-sm font-medium px-4 py-2 rounded-lg transition-colors">
                 Start Free
               </Link>
             </div>
