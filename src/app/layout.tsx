@@ -17,6 +17,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "4H Game — Upload a Chart. Beat the AI.",
   description: "Upload any trading chart screenshot. AI extracts key levels, generates Bull & Bear scenarios, and makes its own call. You call it too. Score after 4 hours. Compete on the leaderboard.",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.playoceancatch.com'),
 };
 
 export default function RootLayout({
@@ -29,6 +30,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased dark`}
     >
+      <head>
+        <link rel="preconnect" href={process.env.NEXT_PUBLIC_SUPABASE_URL ?? ''} />
+        <link rel="dns-prefetch" href="https://api.binance.com" />
+      </head>
       <body className="min-h-full flex flex-col">
         {children}
         <Analytics />

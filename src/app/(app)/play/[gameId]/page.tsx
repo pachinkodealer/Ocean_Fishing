@@ -5,7 +5,7 @@ import { PriceLevels } from '@/components/chart/PriceLevels'
 import { AIvsYou } from '@/components/game/AIvsYou'
 import { CountdownTimer } from '@/components/game/CountdownTimer'
 import { GamePredictionSection } from './GamePredictionSection'
-import { ResultsChart } from '@/components/game/ResultsChart'
+import { ResultsChartDynamic as ResultsChart } from '@/components/game/ResultsChartDynamic'
 import { ShareButton } from '@/components/game/ShareButton'
 import type { Database } from '@/types/database'
 
@@ -69,9 +69,12 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
 
       {/* Chart screenshot — not shown for daily challenge games */}
       {game.screenshot_url && (
+        // eslint-disable-next-line @next/next/no-img-element
         <img
           src={game.screenshot_url}
           alt={`${game.ticker} chart`}
+          loading="lazy"
+          decoding="async"
           className="w-full rounded-xl border border-border object-contain max-h-96"
         />
       )}
