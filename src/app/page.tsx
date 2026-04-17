@@ -102,6 +102,128 @@ export default function LandingPage() {
         </section>
       </div>
 
+      {/* ── Game preview section ── */}
+      <div className="bg-zinc-900 border-t border-white/10 px-6 py-20">
+        <div className="max-w-5xl mx-auto space-y-10">
+          <div className="text-center space-y-2">
+            <p className="text-xs uppercase tracking-widest text-zinc-500 font-mono">Live example</p>
+            <h2 className="text-2xl font-bold text-white">What a scored game looks like</h2>
+            <p className="text-zinc-400 text-sm">Real analysis · Real score · Real competition</p>
+          </div>
+
+          {/* Mock game card */}
+          <div className="rounded-2xl border border-white/10 bg-zinc-950 overflow-hidden shadow-2xl shadow-black/60">
+
+            {/* Game header */}
+            <div className="px-6 py-4 border-b border-white/10 flex items-center justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-0.5">
+                  <h3 className="font-bold font-mono text-xl text-white">ETHUSDT</h3>
+                  <span className="text-xs px-2 py-0.5 rounded-full bg-green-500/20 text-green-400 border border-green-500/20 font-semibold">SCORED</span>
+                </div>
+                <p className="text-xs text-zinc-500">4H · Entry $2,229.99</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-zinc-500 mb-0.5">Resolved at</p>
+                <p className="font-mono font-bold text-xl text-white">$2,369.76</p>
+                <p className="text-xs text-green-400 font-semibold">▲ +6.27%</p>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+
+              {/* Key levels */}
+              <div>
+                <p className="text-xs uppercase tracking-widest text-zinc-500 font-mono mb-3">Key Levels</p>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { type: 'resistance', label: 'Swing High', price: '$2,375' },
+                    { type: 'resistance', label: 'Recent Resistance', price: '$2,336.9' },
+                    { type: 'resistance', label: 'Immediate Res.', price: '$2,250' },
+                    { type: 'support', label: 'EMA 50', price: '$2,214' },
+                    { type: 'support', label: 'EMA 21', price: '$2,203' },
+                    { type: 'support', label: 'Key Support', price: '$2,176' },
+                    { type: 'support', label: 'Bid Wall', price: '$2,125' },
+                  ].map((lvl) => (
+                    <span key={lvl.price} className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full font-mono ${
+                      lvl.type === 'resistance'
+                        ? 'bg-orange-500/10 text-orange-400 border border-orange-500/20'
+                        : 'bg-blue-500/10 text-blue-400 border border-blue-500/20'
+                    }`}>
+                      {lvl.type === 'resistance' ? '▲' : '▼'} {lvl.label} <span className="text-white/70">{lvl.price}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Scenario cards */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="rounded-xl border border-green-500/30 bg-green-500/5 p-4 space-y-3">
+                  <p className="text-sm font-semibold text-green-400">▲ Bull Scenario</p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-400">Target</span>
+                    <span className="font-mono text-white">$2,336.9 <span className="text-green-400 text-xs">(+4.8%)</span></span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-400">Invalidation</span>
+                    <span className="font-mono text-white">$2,176</span>
+                  </div>
+                  <p className="text-xs text-zinc-500 leading-relaxed">Price consolidating above EMA 21 and EMA 50 cluster. A reclaim of $2,250 could trigger momentum toward the $2,336 swing high.</p>
+                </div>
+                <div className="rounded-xl border border-red-500/30 bg-red-500/5 p-4 space-y-3">
+                  <p className="text-sm font-semibold text-red-400">▼ Bear Scenario</p>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-400">Target</span>
+                    <span className="font-mono text-white">$2,125 <span className="text-red-400 text-xs">(-4.7%)</span></span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-zinc-400">Invalidation</span>
+                    <span className="font-mono text-white">$2,250</span>
+                  </div>
+                  <p className="text-xs text-zinc-500 leading-relaxed">Failure to hold above the EMA cluster and the 24H low at $2,176 would confirm bearish continuation toward the $2,125 bid wall.</p>
+                </div>
+              </div>
+
+              {/* Score + AI vs You */}
+              <div className="rounded-xl border border-white/10 bg-white/5 p-4 space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-xs text-zinc-500 font-mono">4H Result</p>
+                    <p className="text-sm text-zinc-300 mt-0.5">
+                      <span className="text-white font-medium">Result of BULL:</span>
+                      <span className="ml-2">✅ Direction <span className="text-green-400 font-semibold">+10 pts</span></span>
+                      <span className="mx-2 text-zinc-600">·</span>
+                      <span>✅ Target <span className="text-green-400 font-semibold">+25 pts</span></span>
+                    </p>
+                  </div>
+                  <span className="text-2xl font-mono font-bold text-green-400">+35 pts</span>
+                </div>
+                <div className="grid grid-cols-2 gap-3 pt-3 border-t border-white/10">
+                  <div className="rounded-lg border border-green-500/30 bg-green-500/10 p-3">
+                    <p className="text-xs text-zinc-500 mb-1">You called</p>
+                    <p className="text-lg font-bold text-green-400">🐂 BULL</p>
+                    <p className="text-xs text-zinc-500 font-mono mt-0.5">Target $2,282.98</p>
+                    <p className="text-sm font-semibold text-green-400 mt-1.5">✅ +35 pts</p>
+                  </div>
+                  <div className="rounded-lg border border-green-500/20 bg-white/5 p-3">
+                    <p className="text-xs text-zinc-500 mb-1">AI called <span className="text-zinc-600">· 58% conf.</span></p>
+                    <p className="text-lg font-bold text-green-400">🐂 BULL</p>
+                    <p className="text-xs text-zinc-500 font-mono mt-0.5">Target $2,300</p>
+                    <p className="text-xs text-zinc-500 mt-1.5">✅ Correct</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <p className="text-center text-sm text-zinc-500">
+            Every call is scored automatically after 4 hours using live market data.{' '}
+            <Link href="/signup" className="text-green-400 hover:text-green-300 transition-colors">Play your first game free →</Link>
+          </p>
+        </div>
+      </div>
+
       {/* ── Light sections below hero ── */}
       <main className="flex-1 flex flex-col items-center bg-background px-6 py-20 space-y-24">
 
