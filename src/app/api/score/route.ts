@@ -3,6 +3,15 @@ import { createServiceClient } from '@/lib/supabase/server'
 import { getKlineAtTime } from '@/lib/binance/price'
 import { scoreGame, recalculateAccuracy } from '@/lib/scoring/engine'
 
+const TIMEFRAME_TO_INTERVAL: Record<string, string> = {
+  '15M': '15m',
+  '30M': '30m',
+  '1H':  '1h',
+  '4H':  '4h',
+  '1D':  '1d',
+  '1W':  '1w',
+}
+
 export async function POST(request: NextRequest) {
   const secret = request.headers.get('x-cron-secret')
   if (secret !== process.env.CRON_SECRET) {
@@ -28,7 +37,8 @@ export async function POST(request: NextRequest) {
   for (const game of games) {
     try {
       const resolveMs = new Date(game.resolve_at).getTime()
-      const kline = await getKlineAtTime(game.ticker, '4h', resolveMs)
+      const interval = TIMEFRAME_TO_INTERVAL[game.timeframe] ?? '4h'
+      const kline = await getKlineAtTime(game.ticker, interval, resolveMs)
 
       // Fetch predictions for this game
       const { data: predictions } = await service
