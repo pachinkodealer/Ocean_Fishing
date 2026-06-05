@@ -89,14 +89,19 @@ export async function getKlineAtTime(
 ): Promise<KlineData> {
   const sym = ticker.toUpperCase()
 
-  // Try Binance.com then Binance.US
-  for (const base of [BINANCE_BASE, BINANCE_US_BASE]) {
+  // Try futures first (not geo-blocked), then spot, then Binance.US
+  const endpoints = [
+    `${BINANCE_FUTURES_BASE}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=1`,
+    `${BINANCE_BASE}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=1`,
+    `${BINANCE_US_BASE}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=1`,
+  ]
+
+  for (const url of endpoints) {
     try {
-      const url = `${base}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=1`
       const res = await fetchWithTimeout(url)
       if (res.ok) {
         const data = await res.json()
-        if (data && data.length > 0) {
+        if (Array.isArray(data) && data.length > 0) {
           const [openTime, open, high, low, close, , closeTime] = data[0]
           return {
             openTime: Number(openTime),
