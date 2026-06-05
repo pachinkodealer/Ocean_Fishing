@@ -6,6 +6,7 @@ import { AIvsYou } from '@/components/game/AIvsYou'
 import { CountdownTimer } from '@/components/game/CountdownTimer'
 import { GamePredictionSection } from './GamePredictionSection'
 import { ResultsChartDynamic as ResultsChart } from '@/components/game/ResultsChartDynamic'
+import { SetupChartDynamic as SetupChart } from '@/components/game/SetupChartDynamic'
 import { ShareButton } from '@/components/game/ShareButton'
 import type { Database } from '@/types/database'
 
@@ -67,8 +68,7 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
         )}
       </div>
 
-      {/* Chart screenshot — not shown for daily challenge games */}
-      {game.screenshot_url && (
+      {game.screenshot_url ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={game.screenshot_url}
@@ -77,6 +77,8 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
           decoding="async"
           className="w-full rounded-xl border border-border object-contain max-h-96"
         />
+      ) : (
+        <SetupChart gameId={gameId} />
       )}
 
       {/* Key levels */}

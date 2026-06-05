@@ -1,5 +1,6 @@
 const BINANCE_BASE = 'https://api.binance.com/api/v3'
 const BINANCE_US_BASE = 'https://api.binance.us/api/v3'
+const BINANCE_FUTURES_BASE = 'https://fapi.binance.com/fapi/v1'
 
 // Map common USDT pairs to CoinGecko IDs
 const COINGECKO_MAP: Record<string, string> = {
@@ -149,4 +150,55 @@ export async function getKlines(
   }
 
   return []
+}
+
+export async function getRecentFuturesKlines(
+  ticker: string,
+  interval: string,
+  limit: number = 30
+): Promise<KlinePoint[]> {
+  const sym = ticker.toUpperCase()
+  try {
+    const url = `${BINANCE_FUTURES_BASE}/klines?symbol=${sym}&interval=${interval}&limit=${limit}`
+    const res = await fetchWithTimeout(url, 10000)
+    if (res.ok) {
+      const data = await res.json()
+      if (Array.isArray(data) && data.length > 0) {
+        return data.map((k: unknown[]) => ({
+          time: Number(k[0]),
+          open: parseFloat(k[1] as string),
+          high: parseFloat(k[2] as string),
+          low: parseFloat(k[3] as string),
+          close: parseFloat(k[4] as string),
+        }))
+      }
+    }
+  } catch { /* fall through to spot */ }
+  return getKlines(ticker, interval, Date.now() - limit * 4 * 60 * 60 * 1000, limit)
+}
+
+export async function getFuturesKlines(
+  ticker: string,
+  interval: string,
+  startTimeMs: number,
+  limit: number = 30
+): Promise<KlinePoint[]> {
+  const sym = ticker.toUpperCase()
+  try {
+    const url = `${BINANCE_FUTURES_BASE}/klines?symbol=${sym}&interval=${interval}&startTime=${startTimeMs}&limit=${limit}`
+    const res = await fetchWithTimeout(url, 10000)
+    if (res.ok) {
+      const data = await res.json()
+      if (Array.isArray(data) && data.length > 0) {
+        return data.map((k: unknown[]) => ({
+          time: Number(k[0]),
+          open: parseFloat(k[1] as string),
+          high: parseFloat(k[2] as string),
+          low: parseFloat(k[3] as string),
+          close: parseFloat(k[4] as string),
+        }))
+      }
+    }
+  } catch { /* fall through to spot */ }
+  return getKlines(ticker, interval, startTimeMs, limit)
 }

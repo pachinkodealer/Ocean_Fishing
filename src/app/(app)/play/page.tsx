@@ -2,113 +2,117 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { UploadZone } from '@/components/chart/UploadZone'
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
+import Link from 'next/link'
 
-const TIMEFRAMES = ['1H', '4H', '1D', '1W']
+const TIMEFRAMES = [
+  { value: '15m', label: '15M', resolves: '15 min' },
+  { value: '30m', label: '30M', resolves: '30 min' },
+  { value: '1h',  label: '1H',  resolves: '1 hour' },
+  { value: '4h',  label: '4H',  resolves: '4 hours' },
+]
 
 export default function PlayPage() {
   const router = useRouter()
-  const [file, setFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>(null)
-  const [ticker, setTicker] = useState('')
-  const [timeframe, setTimeframe] = useState('4H')
+  const [timeframe, setTimeframe] = useState('4h')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  function handleFile(f: File) {
-    setFile(f)
-    setPreview(URL.createObjectURL(f))
-  }
+  const selected = TIMEFRAMES.find(t => t.value === timeframe)!
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!file || !ticker) return
+  async function handleFindSetup() {
     setLoading(true)
     setError(null)
-
-    const formData = new FormData()
-    formData.append('screenshot', file)
-    formData.append('ticker', ticker.toUpperCase())
-    formData.append('timeframe', timeframe)
-
-    const res = await fetch('/api/games', { method: 'POST', body: formData })
+    const res = await fetch('/api/setup', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ timeframe }),
+    })
     const data = await res.json()
-
     if (!res.ok) {
       setError(data.error || 'Something went wrong')
       setLoading(false)
       return
     }
-
     router.push(`/play/${data.id}`)
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Upload Your Chart</h1>
+    <div className="max-w-lg mx-auto space-y-6">
+      <div>
+        <h1 className="text-3xl font-bold">Play</h1>
+        <p className="text-muted-foreground mt-1">Live ETH Perps setup, auto-detected. Call it bull or bear.</p>
+      </div>
 
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <UploadZone onFile={handleFile} preview={preview} />
-
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-base">Chart Details</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="ticker">Ticker Symbol</Label>
-              <Input
-                id="ticker"
-                value={ticker}
-                onChange={(e) => setTicker(e.target.value.toUpperCase())}
-                placeholder="ETHUSDT"
-                className="font-mono uppercase"
-                required
-              />
-              <p className="text-xs text-muted-foreground">Binance perpetual symbols e.g. BTCUSDT, ETHUSDT</p>
+      <Card>
+        <CardContent className="pt-6 space-y-5">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2 py-0.5 rounded-full">
+                ETHUSDT Perps
+              </span>
+              <span className="text-xs font-semibold bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded-full">
+                Resolves in {selected.resolves}
+              </span>
             </div>
+            <p className="text-sm text-muted-foreground">
+              Pulls the latest 30 candles from the ETH perpetual futures market, detects a live setup, and runs AI analysis — no screenshot needed.
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <Label>Timeframe</Label>
-              <div className="flex gap-2">
-                {TIMEFRAMES.map((tf) => (
-                  <button
-                    key={tf}
-                    type="button"
-                    onClick={() => setTimeframe(tf)}
-                    className={`px-4 py-2 rounded-lg border text-sm font-medium transition-colors
-                      ${timeframe === tf ? 'border-primary bg-primary/10 text-primary' : 'border-muted text-muted-foreground hover:border-primary/50'}`}
-                  >
-                    {tf}
-                  </button>
-                ))}
-              </div>
+          {/* Timeframe selector */}
+          <div className="space-y-2">
+            <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Timeframe</p>
+            <div className="grid grid-cols-4 gap-2">
+              {TIMEFRAMES.map(tf => (
+                <button
+                  key={tf.value}
+                  type="button"
+                  onClick={() => setTimeframe(tf.value)}
+                  className={`py-2 rounded-lg border text-sm font-medium transition-colors
+                    ${timeframe === tf.value
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : 'border-muted text-muted-foreground hover:border-primary/50'}`}
+                >
+                  {tf.label}
+                </button>
+              ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
 
-        {error && (
-          <p className="text-sm text-destructive bg-destructive/10 px-4 py-3 rounded-lg">{error}</p>
-        )}
-
-        <Button type="submit" className="w-full" size="lg" disabled={!file || !ticker || loading}>
-          {loading ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-              </svg>
-              AI Analyzing Chart...
-            </span>
-          ) : (
-            'Analyze Chart & Make Call'
+          {error && (
+            <p className="text-sm text-destructive bg-destructive/10 px-4 py-3 rounded-lg">{error}</p>
           )}
-        </Button>
-      </form>
+
+          <Button onClick={handleFindSetup} disabled={loading} className="w-full" size="lg">
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                </svg>
+                Analyzing ETH {selected.label}...
+              </span>
+            ) : (
+              `Find a ${selected.label} Setup & Play`
+            )}
+          </Button>
+
+          <div className="text-xs text-muted-foreground space-y-1 border-t pt-3">
+            <p>+10 pts — correct direction</p>
+            <p>+25 pts — target price hit</p>
+            <p>+5/10/20 bonus — streak (3/5/10)</p>
+          </div>
+        </CardContent>
+      </Card>
+
+      <p className="text-center text-xs text-muted-foreground">
+        Have your own chart?{' '}
+        <Link href="/play/upload" className="text-primary hover:underline">
+          Upload a screenshot instead
+        </Link>
+      </p>
     </div>
   )
 }
