@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createServiceClient } from '@/lib/supabase/server'
-import { getKlines } from '@/lib/binance/price'
+import { getFuturesKlines } from '@/lib/binance/price'
 import { analyzeDailyChallenge } from '@/lib/ai/analyzeDailyChallenge'
 
 const DAILY_TICKER = 'BTCUSDT'
@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
 
   // Fetch recent 4H candles from Binance (lookback from now)
   const startMs = Date.now() - KLINE_LOOKBACK * 4 * 60 * 60 * 1000
-  const klines = await getKlines(DAILY_TICKER, DAILY_TIMEFRAME, startMs, KLINE_LOOKBACK)
+  const klines = await getFuturesKlines(DAILY_TICKER, DAILY_TIMEFRAME, startMs, KLINE_LOOKBACK)
 
   if (klines.length < 10) {
     return NextResponse.json({ error: 'Insufficient kline data from Binance' }, { status: 502 })
