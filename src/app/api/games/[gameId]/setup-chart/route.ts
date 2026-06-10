@@ -53,5 +53,6 @@ export async function GET(
     klines,
     entryPrice: game.current_price,
     keyLevels: game.key_levels,
+    timeframe: game.timeframe,
   })
 }

@@ -218,8 +218,7 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
           <ComposedChart data={klines} margin={MARGINS} barCategoryGap="10%">
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
-              opacity={0.3}
+              stroke="rgba(255,255,255,0.07)"
               vertical={false}
             />
 
@@ -227,23 +226,23 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
               dataKey="time"
               ticks={xTicks}
               tickFormatter={formatTime}
-              tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
+              tick={{ fontSize: 9, fill: '#a1a1aa', fontFamily: 'monospace' }}
               axisLine={false}
-              tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
+              tickLine={{ stroke: 'rgba(255,255,255,0.07)', strokeOpacity: 0.5 }}
               interval={1}
             />
             <YAxis
               domain={yDomain}
               ticks={yTicks}
               tickFormatter={formatPrice}
-              tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
+              tick={{ fontSize: 9, fill: '#a1a1aa', fontFamily: 'monospace' }}
               axisLine={false}
               tickLine={false}
               width={76}
               orientation="right"
             />
 
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'hsl(var(--border))', strokeWidth: 1, strokeDasharray: '3 3' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(255,255,255,0.07)', strokeWidth: 1, strokeDasharray: '3 3' }} />
 
             {/* Key levels */}
             {keyLevels.map((lvl, i) => (
@@ -254,9 +253,9 @@ export function ResultsChart({ gameId, userCall, isCorrect, pointsEarned, hitTar
 
             {/* Entry */}
             <ReferenceLine y={entryPrice}
-              stroke="hsl(var(--muted-foreground))"
+              stroke="#a1a1aa"
               strokeDasharray="5 3" strokeWidth={1.5}
-              label={{ value: `Entry ${formatPrice(entryPrice)}`, position: 'insideTopLeft', fontSize: 9, fill: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
+              label={{ value: `Entry ${formatPrice(entryPrice)}`, position: 'insideTopLeft', fontSize: 9, fill: '#a1a1aa', fontFamily: 'monospace' }}
             />
 
             {/* AI target */}

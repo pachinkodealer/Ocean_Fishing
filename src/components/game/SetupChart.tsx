@@ -30,6 +30,7 @@ interface SetupChartData {
   klines: KlinePoint[]
   entryPrice: number
   keyLevels: KeyLevel[]
+  timeframe?: string
 }
 
 interface SetupChartProps {
@@ -40,7 +41,13 @@ const CHART_HEIGHT = 320
 const MARGINS = { top: 16, right: 80, left: 4, bottom: 4 }
 const INNER_H = CHART_HEIGHT - MARGINS.top - MARGINS.bottom
 
-function formatDate(ms: number) {
+// Visible, reliable chart colors (CSS vars are oklch — invalid inside hsl())
+const AXIS_TICK = '#a1a1aa'
+const GRID_LINE = 'rgba(255,255,255,0.07)'
+
+const INTRADAY = new Set(['15M', '30M', '1H'])
+
+function formatTooltipTime(ms: number) {
   return new Date(ms).toLocaleDateString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })
 }
 
@@ -90,7 +97,7 @@ const CustomTooltip = ({ active, payload }: any) => {
   const isGreen = d.close >= d.open
   return (
     <div className="bg-zinc-900 border border-white/10 rounded-lg px-3 py-2 text-xs shadow-xl">
-      <p className="text-zinc-400 mb-1.5 font-mono">{formatDate(d.time)}</p>
+      <p className="text-zinc-400 mb-1.5 font-mono">{formatTooltipTime(d.time)}</p>
       <div className="space-y-0.5 font-mono">
         <p className="text-zinc-400">O <span className="text-zinc-200">{formatPrice(d.open)}</span></p>
         <p className="text-zinc-400">H <span className="text-green-400">{formatPrice(d.high)}</span></p>
@@ -124,18 +131,21 @@ export function SetupChart({ gameId }: SetupChartProps) {
   if (!data || data.klines.length === 0) return null
 
   const { klines, entryPrice, keyLevels } = data
+  const timeframe = data.timeframe ?? '4H'
+  const isIntraday = INTRADAY.has(timeframe)
 
-  const allPrices = [
-    ...klines.flatMap(k => [k.high, k.low]),
-    entryPrice,
-    ...keyLevels.map(l => l.price),
-  ]
-  const minPrice = Math.min(...allPrices)
-  const maxPrice = Math.max(...allPrices)
-  const pad = (maxPrice - minPrice) * 0.08
-  const yMin = minPrice - pad
-  const yMax = maxPrice + pad
+  // Scale to the candles + entry only — far-away key levels must not
+  // compress the price action
+  const candlePrices = [...klines.flatMap(k => [k.high, k.low]), entryPrice]
+  const candleMin = Math.min(...candlePrices)
+  const candleMax = Math.max(...candlePrices)
+  const pad = (candleMax - candleMin) * 0.08
+  const yMin = candleMin - pad
+  const yMax = candleMax + pad
   const yDomain: [number, number] = [yMin, yMax]
+
+  // Only draw key levels that fall inside the visible range
+  const visibleLevels = keyLevels.filter(l => l.price >= yMin && l.price <= yMax)
 
   const CandleShape = makeCandleShape(yMin, yMax, entryPrice)
 
@@ -148,14 +158,18 @@ export function SetupChart({ gameId }: SetupChartProps) {
   const yTicks: number[] = []
   for (let t = yTickStart; t <= yMax; t += tickStep) yTicks.push(t)
 
-  // Show every 5th x-tick to avoid crowding
+  // Time axis: intraday games show clock time, 4H shows date + hour
   const xTicks = klines.filter((_, i) => i % 5 === 0).map(k => k.time)
+  const formatXTick = (ms: number) =>
+    isIntraday
+      ? new Date(ms).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      : new Date(ms).toLocaleDateString([], { month: 'short', day: 'numeric' })
 
   return (
     <div className="rounded-xl border border-border overflow-hidden">
       <div className="px-5 py-3 border-b border-border bg-muted/30 flex items-center justify-between">
-        <h3 className="font-semibold text-sm tracking-tight">ETH Perps · 4H Context</h3>
-        <span className="text-xs text-muted-foreground font-mono">30 candles · entry highlighted</span>
+        <h3 className="font-semibold text-sm tracking-tight">ETH Perps · {timeframe} Context</h3>
+        <span className="text-xs text-muted-foreground font-mono">{klines.length} candles · entry highlighted</span>
       </div>
 
       <div className="px-2 pt-4 pb-2">
@@ -163,31 +177,30 @@ export function SetupChart({ gameId }: SetupChartProps) {
           <ComposedChart data={klines} margin={MARGINS} barCategoryGap="10%">
             <CartesianGrid
               strokeDasharray="3 3"
-              stroke="hsl(var(--border))"
-              opacity={0.3}
+              stroke={GRID_LINE}
               vertical={false}
             />
             <XAxis
               dataKey="time"
               ticks={xTicks}
-              tickFormatter={(ms) => new Date(ms).toLocaleDateString([], { month: 'short', day: 'numeric' })}
-              tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
-              axisLine={false}
-              tickLine={{ stroke: 'hsl(var(--border))', strokeOpacity: 0.5 }}
+              tickFormatter={formatXTick}
+              tick={{ fontSize: 10, fill: AXIS_TICK, fontFamily: 'monospace' }}
+              axisLine={{ stroke: GRID_LINE }}
+              tickLine={{ stroke: GRID_LINE }}
             />
             <YAxis
               domain={yDomain}
               ticks={yTicks}
               tickFormatter={formatPrice}
-              tick={{ fontSize: 9, fill: 'hsl(var(--muted-foreground))', fontFamily: 'monospace' }}
-              axisLine={false}
+              tick={{ fontSize: 10, fill: AXIS_TICK, fontFamily: 'monospace' }}
+              axisLine={{ stroke: GRID_LINE }}
               tickLine={false}
               width={76}
               orientation="right"
             />
-            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'hsl(var(--border))', strokeWidth: 1, strokeDasharray: '3 3' }} />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: GRID_LINE, strokeWidth: 1, strokeDasharray: '3 3' }} />
 
-            {keyLevels.map((lvl, i) => (
+            {visibleLevels.map((lvl, i) => (
               <ReferenceLine key={i} y={lvl.price}
                 stroke={lvl.type === 'resistance' ? '#f97316' : '#3b82f6'}
                 strokeDasharray="4 4" strokeOpacity={0.5} strokeWidth={1}
