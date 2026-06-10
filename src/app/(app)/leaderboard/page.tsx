@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { LeaderboardTable } from '@/components/leaderboard/LeaderboardTable'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { PageHeader } from '@/components/ui/page-header'
 
 const PERIODS = [
   { value: 'alltime', label: 'All Time' },
@@ -65,31 +65,31 @@ export default async function LeaderboardPage({
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      <h1 className="text-3xl font-bold">Leaderboard</h1>
+      <PageHeader title="Leaderboard" subtitle="Top traders ranked by points" />
 
-      <div className="flex gap-2">
+      <div className="inline-flex p-1 rounded-lg bg-muted/60 border border-border gap-0.5">
         {PERIODS.map(({ value, label }) => (
           <a
             key={value}
             href={`/leaderboard?period=${value}`}
-            className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors
+            className={`px-4 py-1.5 rounded-md text-sm font-medium transition-colors
               ${period === value
-                ? 'bg-primary text-primary-foreground'
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'}`}
+                ? 'bg-card text-foreground shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'}`}
           >
             {label}
           </a>
         ))}
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-base text-muted-foreground">{periodLabel} Rankings</CardTitle>
-        </CardHeader>
-        <CardContent>
+      <div className="rounded-xl border border-border bg-card overflow-hidden">
+        <div className="px-5 py-3.5 border-b border-border">
+          <h2 className="text-sm font-semibold text-muted-foreground">{periodLabel} Rankings</h2>
+        </div>
+        <div className="px-5 py-2">
           <LeaderboardTable entries={entries} currentUserId={user?.id} />
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   )
 }

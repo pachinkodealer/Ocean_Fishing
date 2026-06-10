@@ -39,6 +39,9 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-bull: var(--bull);
+  --color-bear: var(--bear);
+  --color-gold: var(--gold);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -84,24 +87,27 @@
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.72 0.2 145);
-  --primary-foreground: oklch(0.1 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.72 0.2 145);
+  --background: oklch(0.13 0.004 260);
+  --foreground: oklch(0.96 0.002 260);
+  --card: oklch(0.17 0.005 260);
+  --card-foreground: oklch(0.96 0.002 260);
+  --popover: oklch(0.17 0.005 260);
+  --popover-foreground: oklch(0.96 0.002 260);
+  --primary: oklch(0.74 0.19 150);
+  --primary-foreground: oklch(0.12 0.02 150);
+  --secondary: oklch(0.23 0.006 260);
+  --secondary-foreground: oklch(0.96 0.002 260);
+  --muted: oklch(0.23 0.006 260);
+  --muted-foreground: oklch(0.68 0.008 260);
+  --accent: oklch(0.23 0.006 260);
+  --accent-foreground: oklch(0.96 0.002 260);
+  --destructive: oklch(0.66 0.2 25);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.74 0.19 150);
+  --bull: oklch(0.74 0.19 150);
+  --bear: oklch(0.66 0.2 25);
+  --gold: oklch(0.8 0.15 85);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -126,5 +132,12 @@
   }
   html {
     @apply font-sans;
+    scrollbar-color: oklch(0.35 0 0) transparent;
+  }
+  ::selection {
+    background: oklch(0.74 0.19 150 / 30%);
+  }
+  a, button {
+    @apply transition-colors duration-150;
   }
 }

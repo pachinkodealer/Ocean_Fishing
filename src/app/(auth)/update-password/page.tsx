@@ -41,7 +41,6 @@ export default function UpdatePasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Set New Password</CardTitle>
@@ -77,6 +76,5 @@ export default function UpdatePasswordPage() {
           </form>
         </CardContent>
       </Card>
-    </div>
   )
 }

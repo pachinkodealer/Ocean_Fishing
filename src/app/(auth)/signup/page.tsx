@@ -40,11 +40,10 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Create Account</CardTitle>
-          <CardDescription>Join the 4H Scenario Game</CardDescription>
+          <CardDescription>Join the game — call the market, beat the AI</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
@@ -94,6 +93,5 @@ export default function SignupPage() {
           </p>
         </CardContent>
       </Card>
-    </div>
   )
 }

@@ -63,7 +63,7 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
                   <div className="flex items-center gap-2">
                     <span className="font-medium">{entry.profiles?.username ?? 'Unknown'}</span>
                     {entry.profiles?.plan === 'pro' && (
-                      <Badge variant="outline" className="text-xs text-yellow-400 border-yellow-400/40 py-0">PRO</Badge>
+                      <Badge variant="outline" className="text-xs text-gold border-gold/40 py-0">PRO</Badge>
                     )}
                     {isMe && (
                       <Badge variant="outline" className="text-xs py-0">You</Badge>
@@ -75,8 +75,8 @@ export function LeaderboardTable({ entries, currentUserId }: LeaderboardTablePro
                 </td>
                 <td className="py-3 text-right font-mono">
                   <span className={
-                    entry.accuracy >= 60 ? 'text-green-500' :
-                    entry.accuracy >= 40 ? 'text-yellow-500' :
+                    entry.accuracy >= 60 ? 'text-bull' :
+                    entry.accuracy >= 40 ? 'text-gold' :
                     'text-muted-foreground'
                   }>
                     {Number(entry.accuracy).toFixed(1)}%

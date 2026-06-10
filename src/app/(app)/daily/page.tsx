@@ -54,20 +54,20 @@ export default async function DailyPage() {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <span className="text-xs font-semibold bg-yellow-500/20 text-yellow-400 border border-yellow-500/30 px-2 py-0.5 rounded-full">
+            <span className="text-xs font-semibold bg-gold/10 text-gold border border-gold/25 px-2.5 py-0.5 rounded-full">
               ⚡ Daily Challenge
             </span>
-            <span className="text-xs text-muted-foreground">{today}</span>
+            <span className="text-xs text-muted-foreground font-mono">{today}</span>
           </div>
           {challenge ? (
             <>
-              <h1 className="text-2xl font-bold font-mono">{challenge.ticker}</h1>
+              <h1 className="text-2xl sm:text-3xl font-bold font-mono tracking-tight">{challenge.ticker}</h1>
               <p className="text-muted-foreground text-sm">
                 {challenge.timeframe} · Entry ${challenge.current_price.toLocaleString()}
               </p>
             </>
           ) : (
-            <h1 className="text-2xl font-bold">No challenge today yet</h1>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">No challenge today yet</h1>
           )}
         </div>
 
@@ -95,29 +95,27 @@ export default async function DailyPage() {
       </div>
 
       {/* How it works */}
-      <div className="grid grid-cols-3 gap-3 text-center text-sm">
-        <div className="rounded-xl border border-border bg-card px-4 py-3">
-          <div className="text-lg mb-1">🤖</div>
-          <p className="font-medium text-xs">AI picks BTC</p>
-          <p className="text-muted-foreground text-xs mt-0.5">New challenge every day at midnight UTC</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card px-4 py-3">
-          <div className="text-lg mb-1">🎯</div>
-          <p className="font-medium text-xs">You call it</p>
-          <p className="text-muted-foreground text-xs mt-0.5">Bull or Bear — submit before 8pm UTC (4pm EST)</p>
-        </div>
-        <div className="rounded-xl border border-border bg-card px-4 py-3">
-          <div className="text-lg mb-1">🏆</div>
-          <p className="font-medium text-xs">Score &amp; rank</p>
-          <p className="text-muted-foreground text-xs mt-0.5">Results scored at 8pm UTC (4pm EST) · beat the AI to win</p>
-        </div>
+      <div className="grid grid-cols-3 gap-3 text-sm">
+        {[
+          { step: '1', title: 'AI picks BTC', desc: 'New challenge every day at midnight UTC' },
+          { step: '2', title: 'You call it', desc: 'Bull or Bear — submit before 8pm UTC (4pm EST)' },
+          { step: '3', title: 'Score & rank', desc: 'Scored at 8pm UTC · beat the AI to win' },
+        ].map(({ step, title, desc }) => (
+          <div key={step} className="rounded-xl border border-border bg-card px-4 py-3.5">
+            <span className="inline-flex items-center justify-center w-5 h-5 rounded-full bg-primary/10 text-primary text-[10px] font-bold font-mono mb-2">
+              {step}
+            </span>
+            <p className="font-semibold text-xs">{title}</p>
+            <p className="text-muted-foreground text-xs mt-0.5 leading-relaxed">{desc}</p>
+          </div>
+        ))}
       </div>
 
       {/* No challenge state */}
       {!challenge && (
-        <div className="rounded-xl border border-border bg-card p-12 text-center">
-          <div className="text-4xl mb-3">🌅</div>
-          <p className="text-muted-foreground">Today's challenge is being prepared. Check back soon.</p>
+        <div className="rounded-xl border border-border bg-card p-14 text-center space-y-1">
+          <p className="font-semibold">Today's challenge is being prepared</p>
+          <p className="text-sm text-muted-foreground">Check back soon — a new challenge drops at midnight UTC.</p>
         </div>
       )}
 
@@ -145,8 +143,7 @@ export default async function DailyPage() {
 
           {/* Prediction / AI vs You */}
           {!userGame && !isResolved ? (
-            <div className="rounded-xl border border-yellow-500/30 bg-yellow-500/5 p-6 text-center space-y-3">
-              <div className="text-3xl">🎯</div>
+            <div className="rounded-xl border border-gold/25 bg-gold/5 p-6 text-center space-y-3">
               <p className="font-semibold">Ready to play today's challenge?</p>
               <p className="text-sm text-muted-foreground">
                 Bull or Bear on {challenge.ticker}? Outscore the AI and climb the daily board.

@@ -28,7 +28,7 @@ export default async function UpgradePage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">Upgrade to Pro</h1>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Upgrade to Pro</h1>
         <p className="text-muted-foreground">Unlock unlimited calls and more</p>
       </div>
 
@@ -46,7 +46,7 @@ export default async function UpgradePage() {
             <ul className="space-y-2">
               {FREE_FEATURES.map((f) => (
                 <li key={f} className="text-sm text-muted-foreground flex items-center gap-2">
-                  <span className="text-green-400">✓</span> {f}
+                  <span className="text-primary">✓</span> {f}
                 </li>
               ))}
             </ul>
@@ -54,13 +54,13 @@ export default async function UpgradePage() {
         </Card>
 
         {/* Pro */}
-        <Card className="border-yellow-500/40 bg-yellow-500/5">
+        <Card className="border-gold/30 bg-gold/5">
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               Pro
               {isPro
-                ? <Badge className="bg-yellow-400 text-black hover:bg-yellow-400">Active</Badge>
-                : <Badge className="bg-yellow-400 text-black hover:bg-yellow-400">Recommended</Badge>}
+                ? <Badge className="bg-gold text-black hover:bg-gold">Active</Badge>
+                : <Badge className="bg-gold text-black hover:bg-gold">Recommended</Badge>}
             </CardTitle>
             <p className="text-2xl font-bold">$3 <span className="text-base font-normal text-muted-foreground">/month</span></p>
           </CardHeader>
@@ -68,7 +68,7 @@ export default async function UpgradePage() {
             <ul className="space-y-2">
               {PRO_FEATURES.map((f) => (
                 <li key={f} className="text-sm flex items-center gap-2">
-                  <span className="text-green-400">✓</span> {f}
+                  <span className="text-primary">✓</span> {f}
                 </li>
               ))}
             </ul>

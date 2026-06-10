@@ -33,10 +33,9 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl">4H Scenario Game</CardTitle>
+          <CardTitle className="text-2xl">Welcome back</CardTitle>
           <CardDescription>Sign in to make your calls</CardDescription>
         </CardHeader>
         <CardContent>
@@ -80,6 +79,5 @@ export default function LoginPage() {
           </p>
         </CardContent>
       </Card>
-    </div>
   )
 }

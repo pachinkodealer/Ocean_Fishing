@@ -12,7 +12,10 @@ export default function LandingPage() {
 
         {/* Nav */}
         <nav className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
-          <span className="font-bold text-xl font-mono text-white">4H Game</span>
+          <span className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
+            <span className="font-bold text-xl tracking-tight text-white">4H Game</span>
+          </span>
           <div className="flex gap-3">
             <Link href="/login" className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-lg">
               Sign In

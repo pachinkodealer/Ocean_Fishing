@@ -46,22 +46,27 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold font-mono">{game.ticker}</h1>
-          <p className="text-muted-foreground text-sm">{game.timeframe} · Entry ${game.current_price.toLocaleString()}</p>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-2xl sm:text-3xl font-bold font-mono tracking-tight">{game.ticker}</h1>
+            <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-muted text-muted-foreground border border-border">
+              {game.timeframe}
+            </span>
+          </div>
+          <p className="text-muted-foreground text-sm mt-0.5">Entry ${game.current_price.toLocaleString()}</p>
         </div>
         {game.status === 'pending' && (
-          <div>
-            <p className="text-xs text-center text-muted-foreground mb-1">Resolves in</p>
+          <div className="rounded-xl border border-border bg-card px-4 py-2.5 text-center">
+            <p className="text-xs text-muted-foreground mb-0.5">Resolves in</p>
             <CountdownTimer resolveAt={game.resolve_at} />
           </div>
         )}
         {game.status === 'scored' && (
-          <div className="flex items-center gap-4">
-            <div className="text-center">
-              <p className="text-xs text-muted-foreground">Resolved at</p>
-              <p className="font-mono font-bold text-xl">${game.resolved_price?.toLocaleString()}</p>
+          <div className="flex items-center gap-3">
+            <div className="rounded-xl border border-border bg-card px-4 py-2.5 text-center">
+              <p className="text-xs text-muted-foreground mb-0.5">Resolved at</p>
+              <p className="font-mono font-bold text-lg leading-tight">${game.resolved_price?.toLocaleString()}</p>
             </div>
             {prediction && <ShareButton gameId={gameId} />}
           </div>

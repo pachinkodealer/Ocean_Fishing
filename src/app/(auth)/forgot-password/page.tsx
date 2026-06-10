@@ -34,7 +34,6 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background px-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Reset Password</CardTitle>
@@ -78,6 +77,5 @@ export default function ForgotPasswordPage() {
           )}
         </CardContent>
       </Card>
-    </div>
   )
 }

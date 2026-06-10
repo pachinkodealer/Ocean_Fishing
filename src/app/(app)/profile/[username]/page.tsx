@@ -64,7 +64,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
               <div className="flex items-center gap-2">
                 <h1 className="text-2xl font-bold">{profile.username}</h1>
                 {profile.plan === 'pro' && (
-                  <Badge className="bg-yellow-400 text-black hover:bg-yellow-400 text-xs">PRO</Badge>
+                  <Badge className="bg-gold text-black hover:bg-gold text-xs">PRO</Badge>
                 )}
                 {isMe && (
                   <Badge variant="outline" className="text-xs">You</Badge>
@@ -165,7 +165,7 @@ export default async function ProfilePage({ params }: { params: Promise<{ userna
                         </span>
                       )}
                       <span className={`text-xs px-2 py-0.5 rounded-full ${
-                        game.status === 'scored' ? 'bg-muted text-muted-foreground' : 'bg-yellow-500/15 text-yellow-500'
+                        game.status === 'scored' ? 'bg-muted text-muted-foreground' : 'bg-gold/15 text-gold'
                       }`}>
                         {game.status}
                       </span>

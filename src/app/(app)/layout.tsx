@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
+import { AppNav } from '@/components/nav/AppNav'
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
@@ -18,25 +18,11 @@ export default async function AppLayout({ children }: { children: React.ReactNod
 
   return (
     <div className="min-h-screen bg-background">
-      <nav className="border-b px-4 py-3 flex items-center justify-between max-w-6xl mx-auto">
-        <Link href="/dashboard" className="font-bold text-lg">4H Game</Link>
-        <div className="flex items-center gap-6 text-sm">
-          <Link href="/play" className="text-muted-foreground hover:text-foreground transition-colors">Play</Link>
-          <Link href="/daily" className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1">
-            <span>⚡</span>Daily
-          </Link>
-          <Link href="/leaderboard" className="text-muted-foreground hover:text-foreground transition-colors">Leaderboard</Link>
-          <div className="flex items-center gap-3">
-            <span className="font-mono font-semibold text-primary">{profile?.points ?? 0} pts</span>
-            {(profile?.streak ?? 0) > 0 && (
-              <span className="text-orange-400 text-xs font-semibold">{profile?.streak} 🔥</span>
-            )}
-            <Link href={`/profile/${profile?.username}`} className="text-muted-foreground hover:text-foreground transition-colors">
-              {profile?.username}
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <AppNav
+        username={profile?.username ?? 'trader'}
+        points={profile?.points ?? 0}
+        streak={profile?.streak ?? 0}
+      />
       <main className="max-w-6xl mx-auto px-4 py-8">
         {children}
       </main>

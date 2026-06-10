@@ -41,8 +41,8 @@ export default function PlayPage() {
   return (
     <div className="max-w-lg mx-auto space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Play</h1>
-        <p className="text-muted-foreground mt-1">Live ETH Perps setup, auto-detected. Call it bull or bear.</p>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">Play</h1>
+        <p className="text-muted-foreground mt-1 text-sm sm:text-base">Live ETH Perps setup, auto-detected. Call it bull or bear.</p>
       </div>
 
       <Card>
