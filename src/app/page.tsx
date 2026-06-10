@@ -35,12 +35,13 @@ export default function LandingPage() {
               ⚡ Free to play · No credit card required
             </span>
             <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight">
-              Upload a Chart.<br />
+              Spot the Setup.<br />
               <span className="text-green-400">Beat the AI.</span>
             </h1>
             <p className="text-lg text-zinc-400 leading-relaxed">
-              Screenshot any trading chart. AI extracts key levels, generates Bull &amp; Bear scenarios, and makes its own call.
-              You call it too. Score after 4 hours. Climb the leaderboard.
+              Train your eyes to see setups faster — without risking a single dollar.
+              Live ETH Perps setups, auto-detected. AI maps the key levels and makes its call.
+              You make yours. Scored in as little as 15 minutes.
             </p>
             <div className="flex gap-4 flex-wrap">
               <Link href="/signup" className="px-6 py-3 text-sm font-semibold bg-green-500 hover:bg-green-400 text-black rounded-lg transition-colors">
@@ -51,7 +52,7 @@ export default function LandingPage() {
               </Link>
             </div>
             <div className="flex flex-wrap gap-x-6 gap-y-1 text-xs text-zinc-500">
-              {['Works with TradingView', 'Any chart screenshot', 'BTC · ETH · SOL · more'].map(s => (
+              {['Live ETH Perps data', '15M · 30M · 1H · 4H timeframes', 'No uploads needed'].map(s => (
                 <span key={s} className="flex items-center gap-1.5">
                   <span className="w-1 h-1 rounded-full bg-green-500 inline-block" />{s}
                 </span>
@@ -221,7 +222,7 @@ export default function LandingPage() {
           </div>
 
           <p className="text-center text-sm text-zinc-500">
-            Every call is scored automatically after 4 hours using live market data.{' '}
+            Every call is scored automatically using live market data — in as little as 15 minutes.{' '}
             <Link href="/signup" className="text-green-400 hover:text-green-300 transition-colors">Play your first game free →</Link>
           </p>
         </div>
@@ -235,9 +236,9 @@ export default function LandingPage() {
           <h2 className="text-center text-2xl font-bold">How it works</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 relative">
             {[
-              { icon: '📸', step: '01', title: 'Upload your chart', desc: 'Screenshot any chart from TradingView, Binance, or your broker. Any timeframe.' },
-              { icon: '🤖', step: '02', title: 'AI makes its call', desc: 'Claude AI extracts key levels, generates Bull & Bear scenarios, and picks a side with confidence.' },
-              { icon: '🏆', step: '03', title: 'Score after 4H', desc: 'Price resolves automatically. Points for correct direction and target hits. Streaks earn bonuses.' },
+              { icon: '⚡', step: '01', title: 'Get a live setup', desc: 'One click pulls a live ETH Perps setup straight from the market. Pick 15M, 30M, 1H, or 4H.' },
+              { icon: '🤖', step: '02', title: 'AI makes its call', desc: 'AI maps key levels, generates Bull & Bear scenarios, and picks a side with confidence.' },
+              { icon: '🏆', step: '03', title: 'Score & climb', desc: 'Price resolves automatically on your timeframe. Points for direction and target hits. Streaks earn bonuses.' },
             ].map((item, i) => (
               <div key={item.step} className="relative flex flex-col items-center text-center space-y-3 p-7 rounded-2xl border border-border bg-muted/20 hover:bg-muted/40 transition-colors">
                 <span className="text-4xl">{item.icon}</span>

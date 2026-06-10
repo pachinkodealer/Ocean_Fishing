@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "4H Game — Upload a Chart. Beat the AI.",
-  description: "Upload any trading chart screenshot. AI extracts key levels, generates Bull & Bear scenarios, and makes its own call. You call it too. Score after 4 hours. Compete on the leaderboard.",
+  title: "4H Game — Spot the Setup. Beat the AI.",
+  description: "Train your eyes to see setups faster — without risking a single dollar. Live ETH Perps setups auto-detected, AI makes its call, you make yours. Scored in as little as 15 minutes.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.playoceancatch.com'),
 };
 
