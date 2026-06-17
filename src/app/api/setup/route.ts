@@ -46,21 +46,24 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  const klines = await getRecentFuturesKlines(TICKER, interval, CANDLE_COUNT)
-  if (klines.length < 10) {
+  // Fetch one extra so the last item is the still-forming candle.
+  // The second-to-last is the last COMPLETE candle — used as entry and
+  // passed to the AI so the chart, entry price, and analysis are all aligned.
+  const klines = await getRecentFuturesKlines(TICKER, interval, CANDLE_COUNT + 1)
+  if (klines.length < 11) {
     return NextResponse.json({ error: 'Unable to fetch market data. Try again.' }, { status: 503 })
   }
 
-  const setup = detectSetup(klines)
+  const contextKlines = klines.slice(0, CANDLE_COUNT)
+  const entryPrice = contextKlines[contextKlines.length - 1].close
+
+  const setup = detectSetup(contextKlines)
 
   const analysis = await analyzeDailyChallenge(
     TICKER,
     interval,
-    klines.map(k => ({ open: k.open, high: k.high, low: k.low, close: k.close }))
+    contextKlines.map(k => ({ open: k.open, high: k.high, low: k.low, close: k.close }))
   )
-
-  // Use the actual last kline close — more reliable than the AI's reported current_price
-  const entryPrice = klines[klines.length - 1].close
 
   const resolveAt = new Date(Date.now() + tf.candleMs).toISOString()
   const service = createServiceClient()
