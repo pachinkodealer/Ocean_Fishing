@@ -1,22 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
 import { getFuturesKlines } from '@/lib/binance/price'
+import { byDisplay } from '@/lib/timeframes'
 
 const CANDLE_COUNT = 30
-
-const TIMEFRAME_TO_MS: Record<string, number> = {
-  '15M': 15 * 60 * 1000,
-  '30M': 30 * 60 * 1000,
-  '1H':  60 * 60 * 1000,
-  '4H':  4 * 60 * 60 * 1000,
-}
-
-const TIMEFRAME_TO_INTERVAL: Record<string, string> = {
-  '15M': '15m',
-  '30M': '30m',
-  '1H':  '1h',
-  '4H':  '4h',
-}
 
 export async function GET(
   _req: NextRequest,
@@ -41,13 +28,11 @@ export async function GET(
     timeframe: string
   }
 
-  const intervalMs = TIMEFRAME_TO_MS[game.timeframe] ?? TIMEFRAME_TO_MS['4H']
-  const binanceInterval = TIMEFRAME_TO_INTERVAL[game.timeframe] ?? '4h'
+  const tf      = byDisplay(game.timeframe)
+  const endMs   = new Date(game.created_at).getTime()
+  const startMs = endMs - CANDLE_COUNT * tf.candleMs
 
-  const endMs = new Date(game.created_at).getTime()
-  const startMs = endMs - CANDLE_COUNT * intervalMs
-
-  const klines = await getFuturesKlines(game.ticker, binanceInterval, startMs, CANDLE_COUNT)
+  const klines = await getFuturesKlines(game.ticker, tf.interval, startMs, CANDLE_COUNT)
 
   return NextResponse.json({
     klines,

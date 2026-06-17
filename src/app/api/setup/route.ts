@@ -59,6 +59,9 @@ export async function POST(request: NextRequest) {
     klines.map(k => ({ open: k.open, high: k.high, low: k.low, close: k.close }))
   )
 
+  // Use the actual last kline close — more reliable than the AI's reported current_price
+  const entryPrice = klines[klines.length - 1].close
+
   const resolveAt = new Date(Date.now() + tf.candleMs).toISOString()
   const service = createServiceClient()
 
@@ -69,7 +72,7 @@ export async function POST(request: NextRequest) {
       ticker: TICKER,
       timeframe: tf.display,
       screenshot_url: '',
-      current_price: analysis.current_price,
+      current_price: entryPrice,
       key_levels: analysis.key_levels,
       bull_scenario: analysis.bull_scenario,
       bear_scenario: analysis.bear_scenario,
