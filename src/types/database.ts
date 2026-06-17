@@ -40,6 +40,7 @@ export type Database = {
           timeframe: string
           screenshot_url: string
           current_price: number
+          setup_klines: Json
           key_levels: Json
           bull_scenario: Json
           bear_scenario: Json
@@ -61,6 +62,7 @@ export type Database = {
           timeframe: string
           screenshot_url?: string
           current_price: number
+          setup_klines?: Json
           key_levels: Json
           bull_scenario: Json
           bear_scenario: Json

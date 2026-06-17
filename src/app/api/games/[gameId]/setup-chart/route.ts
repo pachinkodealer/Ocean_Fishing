@@ -14,7 +14,7 @@ export async function GET(
 
   const { data: gameData } = await supabase
     .from('games')
-    .select('ticker, current_price, created_at, key_levels, timeframe')
+    .select('ticker, current_price, created_at, key_levels, timeframe, setup_klines')
     .eq('id', gameId)
     .single()
 
@@ -26,13 +26,19 @@ export async function GET(
     created_at: string
     key_levels: Array<{ label: string; price: number; type: string }>
     timeframe: string
+    setup_klines: Array<{ time: number; open: number; high: number; low: number; close: number }> | null
   }
 
-  const tf      = byDisplay(game.timeframe)
-  const endMs   = new Date(game.created_at).getTime()
-  const startMs = endMs - CANDLE_COUNT * tf.candleMs
-
-  const klines = await getFuturesKlines(game.ticker, tf.interval, startMs, CANDLE_COUNT)
+  // Prefer the frozen snapshot stored at creation — guarantees the chart
+  // matches the stored entry price and key levels. Older games have none,
+  // so fall back to a live fetch of the creation-time window.
+  let klines = game.setup_klines ?? []
+  if (klines.length === 0) {
+    const tf      = byDisplay(game.timeframe)
+    const endMs   = new Date(game.created_at).getTime()
+    const startMs = endMs - CANDLE_COUNT * tf.candleMs
+    klines = await getFuturesKlines(game.ticker, tf.interval, startMs, CANDLE_COUNT)
+  }
 
   return NextResponse.json({
     klines,

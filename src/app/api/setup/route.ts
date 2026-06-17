@@ -76,6 +76,7 @@ export async function POST(request: NextRequest) {
       timeframe: tf.display,
       screenshot_url: '',
       current_price: entryPrice,
+      setup_klines: contextKlines,
       key_levels: analysis.key_levels,
       bull_scenario: analysis.bull_scenario,
       bear_scenario: analysis.bear_scenario,
