@@ -21,6 +21,21 @@ const COINGECKO_MAP: Record<string, string> = {
   NEARUSDT: 'near',
 }
 
+// Parse a Binance interval string ("15m", "1h", "4h", "1d", "1w") to milliseconds.
+// Used to compute correct start times when falling back from the futures API.
+function intervalToMs(interval: string): number {
+  const m = interval.match(/^(\d+)([mhdw])$/)
+  if (!m) return 60 * 60 * 1000 // default 1h
+  const n = Number(m[1])
+  const unit = m[2]
+  const mult =
+    unit === 'm' ? 60_000 :
+    unit === 'h' ? 3_600_000 :
+    unit === 'd' ? 86_400_000 :
+    604_800_000 // w
+  return n * mult
+}
+
 async function fetchWithTimeout(url: string, ms = 8000): Promise<Response> {
   const controller = new AbortController()
   const timeout = setTimeout(() => controller.abort(), ms)
@@ -179,7 +194,9 @@ export async function getRecentFuturesKlines(
       }
     }
   } catch { /* fall through to spot */ }
-  return getKlines(ticker, interval, Date.now() - limit * 4 * 60 * 60 * 1000, limit)
+  // Reach back limit candles of the ACTUAL interval — not a hardcoded 4h —
+  // so fallback data is the most recent candles, not stale ones from days ago.
+  return getKlines(ticker, interval, Date.now() - limit * intervalToMs(interval), limit)
 }
 
 export async function getFuturesKlines(
