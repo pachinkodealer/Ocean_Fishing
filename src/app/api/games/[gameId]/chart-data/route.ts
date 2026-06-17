@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@/lib/supabase/server'
-import { getKlines } from '@/lib/binance/price'
+import { getFuturesKlines } from '@/lib/binance/price'
+import { byDisplay } from '@/lib/timeframes'
 
 export async function GET(
   _req: NextRequest,
@@ -11,7 +12,7 @@ export async function GET(
 
   const { data: gameData } = await supabase
     .from('games')
-    .select('ticker, current_price, resolve_at, resolved_price, ai_call, ai_target, key_levels, bull_scenario, bear_scenario, created_at, status')
+    .select('ticker, timeframe, current_price, resolve_at, resolved_price, ai_call, ai_target, key_levels, bull_scenario, bear_scenario, created_at, status')
     .eq('id', gameId)
     .single()
 
@@ -21,6 +22,7 @@ export async function GET(
 
   const game = gameData as {
     ticker: string
+    timeframe: string
     current_price: number
     resolve_at: string
     resolved_price: number | null
@@ -35,8 +37,9 @@ export async function GET(
 
   const startMs = new Date(game.created_at).getTime()
 
-  // Fetch 15-min candles for the 4H window (16 candles = 4 hours)
-  const klines = await getKlines(game.ticker, '15m', startMs, 16)
+  // Result candles sized to the game's timeframe (e.g. 15M game → 15 × 1m)
+  const tf = byDisplay(game.timeframe)
+  const klines = await getFuturesKlines(game.ticker, tf.resultInterval, startMs, tf.resultLimit)
 
   return NextResponse.json({
     klines,

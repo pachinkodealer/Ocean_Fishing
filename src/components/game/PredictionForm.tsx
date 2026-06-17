@@ -6,13 +6,12 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 interface PredictionFormProps {
-  gameId: string
   currentPrice: number
   onSubmit: (direction: 'bull' | 'bear', targetPrice?: number) => Promise<void>
   disabled?: boolean
 }
 
-export function PredictionForm({ gameId, currentPrice, onSubmit, disabled }: PredictionFormProps) {
+export function PredictionForm({ currentPrice, onSubmit, disabled }: PredictionFormProps) {
   const [direction, setDirection] = useState<'bull' | 'bear' | null>(null)
   const [targetPrice, setTargetPrice] = useState('')
   const [loading, setLoading] = useState(false)

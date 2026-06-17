@@ -1,6 +1,7 @@
 import { createServiceClient } from '@/lib/supabase/server'
 import { getKlineAtTime, getCurrentPrice } from '@/lib/binance/price'
 import { scoreGame, recalculateAccuracy } from '@/lib/scoring/engine'
+import { byDisplay } from '@/lib/timeframes'
 import type { KlineData } from '@/lib/binance/price'
 
 async function getKlineSafe(ticker: string, interval: string, resolveMs: number): Promise<KlineData> {
@@ -11,15 +12,6 @@ async function getKlineSafe(ticker: string, interval: string, resolveMs: number)
     const price = await getCurrentPrice(ticker)
     return { open: price, high: price, low: price, close: price, openTime: resolveMs, closeTime: resolveMs }
   }
-}
-
-const TIMEFRAME_TO_INTERVAL: Record<string, string> = {
-  '15M': '15m',
-  '30M': '30m',
-  '1H':  '1h',
-  '4H':  '4h',
-  '1D':  '1d',
-  '1W':  '1w',
 }
 
 export async function runScoring(): Promise<{ scored: number; errors: string[] }> {
@@ -40,8 +32,8 @@ export async function runScoring(): Promise<{ scored: number; errors: string[] }
   for (const game of games) {
     try {
       const resolveMs = new Date(game.resolve_at).getTime()
-      const interval = TIMEFRAME_TO_INTERVAL[game.timeframe] ?? '4h'
-      const kline = await getKlineSafe(game.ticker, interval, resolveMs)
+      const tf = byDisplay(game.timeframe)
+      const kline = await getKlineSafe(game.ticker, tf.interval, resolveMs)
 
       const { data: predictions } = await service
         .from('predictions')

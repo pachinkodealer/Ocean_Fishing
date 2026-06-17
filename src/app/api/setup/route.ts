@@ -2,18 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient, createServiceClient } from '@/lib/supabase/server'
 import { getRecentFuturesKlines } from '@/lib/binance/price'
 import { analyzeDailyChallenge } from '@/lib/ai/analyzeDailyChallenge'
+import { byInterval } from '@/lib/timeframes'
 import { detectSetup } from '@/lib/setups/detector'
 
 const FREE_DAILY_LIMIT = 3
 const TICKER = 'ETHUSDT'
 const CANDLE_COUNT = 30
-
-const TIMEFRAME_CONFIG: Record<string, { displayName: string; resolveMs: number }> = {
-  '15m': { displayName: '15M', resolveMs: 15 * 60 * 1000 },
-  '30m': { displayName: '30M', resolveMs: 30 * 60 * 1000 },
-  '1h':  { displayName: '1H',  resolveMs: 60 * 60 * 1000 },
-  '4h':  { displayName: '4H',  resolveMs: 4 * 60 * 60 * 1000 },
-}
+const PLAYABLE = new Set(['15m', '30m', '1h', '4h'])
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient()
@@ -23,11 +18,10 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({}))
   const interval = (body.timeframe as string) ?? '4h'
 
-  if (!TIMEFRAME_CONFIG[interval]) {
+  const tf = byInterval(interval)
+  if (!tf || !PLAYABLE.has(interval)) {
     return NextResponse.json({ error: 'Invalid timeframe' }, { status: 400 })
   }
-
-  const { displayName, resolveMs } = TIMEFRAME_CONFIG[interval]
 
   const { data: profileData } = await supabase
     .from('profiles')
@@ -65,7 +59,7 @@ export async function POST(request: NextRequest) {
     klines.map(k => ({ open: k.open, high: k.high, low: k.low, close: k.close }))
   )
 
-  const resolveAt = new Date(Date.now() + resolveMs).toISOString()
+  const resolveAt = new Date(Date.now() + tf.candleMs).toISOString()
   const service = createServiceClient()
 
   const { data: game, error: gameError } = await service
@@ -73,7 +67,7 @@ export async function POST(request: NextRequest) {
     .insert({
       user_id: user.id,
       ticker: TICKER,
-      timeframe: displayName,
+      timeframe: tf.display,
       screenshot_url: '',
       current_price: analysis.current_price,
       key_levels: analysis.key_levels,

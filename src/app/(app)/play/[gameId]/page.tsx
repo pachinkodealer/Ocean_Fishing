@@ -44,8 +44,11 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
       : game.resolved_price < game.current_price
   }
 
+  const showStickyBar = !prediction && game.status === 'pending'
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <>
+    <div className={`max-w-4xl mx-auto space-y-6 ${showStickyBar ? 'pb-28' : ''}`}>
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <div>
           <div className="flex items-center gap-2.5">
@@ -106,10 +109,8 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
         />
       )}
 
-      {/* Prediction section */}
-      {!prediction && game.status === 'pending' ? (
-        <GamePredictionSection gameId={gameId} currentPrice={game.current_price} />
-      ) : (
+      {/* AI vs You — shown once a prediction exists or game is scored */}
+      {(prediction || game.status === 'scored') && (
         <AIvsYou
           aiCall={game.ai_call as 'bull' | 'bear'}
           aiTarget={game.ai_target}
@@ -125,5 +126,10 @@ export default async function GamePage({ params }: { params: Promise<{ gameId: s
         />
       )}
     </div>
+
+    {showStickyBar && (
+      <GamePredictionSection gameId={gameId} currentPrice={game.current_price} />
+    )}
+    </>
   )
 }
