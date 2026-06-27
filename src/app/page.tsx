@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { AnimatedHero } from '@/components/landing/AnimatedHero'
 
 const FREE_FEATURES = ['3 calls per day', 'AI scenario analysis', 'Leaderboard access']
 const PRO_FEATURES = ['Unlimited calls per day', 'AI scenario analysis', 'Leaderboard access', 'Priority scoring', 'Pro badge on leaderboard']
@@ -60,47 +61,9 @@ export default function LandingPage() {
             </div>
           </div>
 
-          {/* Right — product preview card */}
+          {/* Right — animated hero */}
           <div className="w-full max-w-sm flex-shrink-0">
-            <p className="text-xs text-center text-zinc-500 mb-3 uppercase tracking-widest">Live example</p>
-            <div className="rounded-2xl border border-white/10 bg-zinc-900 overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-green-500/20">
-              <div className="px-5 py-4 border-b border-white/10 flex items-center justify-between">
-                <div>
-                  <p className="font-bold font-mono text-base text-white">ETHUSDT</p>
-                  <p className="text-xs text-zinc-500">4H · Entry $2,129.56</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-zinc-500">Resolved at</p>
-                  <p className="font-mono font-bold text-white">$2,201.40</p>
-                </div>
-              </div>
-              <div className="px-5 py-4 space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-zinc-300">Result of BULL</span>
-                  <span className="text-green-400 font-mono font-bold text-xl">+35 pts</span>
-                </div>
-                <div className="text-sm text-zinc-500 space-y-1.5">
-                  <div className="flex items-center gap-2">
-                    <span>✅</span><span>Direction correct</span>
-                    <span className="font-semibold text-green-400 ml-auto">+10 pts</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <span>✅</span><span>Target hit $2,200</span>
-                    <span className="font-semibold text-green-400 ml-auto">+25 pts</span>
-                  </div>
-                </div>
-                <div className="pt-2 border-t border-white/10 grid grid-cols-2 gap-2">
-                  <div className="bg-white/5 rounded-lg px-3 py-2 text-center">
-                    <p className="text-xs text-zinc-500 mb-0.5">You</p>
-                    <span className="text-xs font-bold text-green-400">▲ LONG</span>
-                  </div>
-                  <div className="bg-white/5 rounded-lg px-3 py-2 text-center">
-                    <p className="text-xs text-zinc-500 mb-0.5">AI · 71% conf.</p>
-                    <span className="text-xs font-bold text-green-400">▲ LONG</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <AnimatedHero />
           </div>
 
         </section>
