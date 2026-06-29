@@ -39,10 +39,9 @@ export async function proxy(request: NextRequest) {
 
   const { pathname } = request.nextUrl
 
-  // Protect /app routes
+  // Protect /app routes (leaderboard is intentionally public)
   if (!user && pathname.startsWith('/dashboard') ||
       !user && pathname.startsWith('/play') ||
-      !user && pathname.startsWith('/leaderboard') ||
       !user && pathname.startsWith('/profile')) {
     return NextResponse.redirect(new URL('/login', request.url))
   }
@@ -60,7 +59,6 @@ export const config = {
     '/',
     '/dashboard/:path*',
     '/play/:path*',
-    '/leaderboard/:path*',
     '/profile/:path*',
     '/upgrade/:path*',
     '/daily/:path*',
