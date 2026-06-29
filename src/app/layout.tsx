@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "4H Game — Spot the Setup. Beat the AI.",
-  description: "Train your eyes to see setups faster — without risking a single dollar. Live ETH Perps setups auto-detected, AI makes its call, you make yours. Scored in as little as 15 minutes.",
+  title: "CallTheCandle — Call the Candle. Beat the AI.",
+  description: "Bull or bear on live crypto setups — scored in minutes. The AI makes its call, you make yours. No money at risk.",
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'https://www.playoceancatch.com'),
 };
 

@@ -14,7 +14,7 @@ export function ShareButton({ gameId }: Props) {
 
     if (navigator.share) {
       try {
-        await navigator.share({ title: 'My 4H Game Result', url })
+        await navigator.share({ title: 'My CallTheCandle result — can you beat the AI?', url })
         return
       } catch { /* user cancelled or not supported */ }
     }

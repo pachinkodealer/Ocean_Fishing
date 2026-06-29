@@ -15,23 +15,23 @@ export async function generateMetadata(
     .eq('id', gameId)
     .maybeSingle()
 
-  if (!game) return { title: '4H Game' }
+  if (!game) return { title: 'CallTheCandle' }
 
   const outcome = game.status === 'scored' && game.resolved_price
     ? (game.resolved_price > game.current_price ? '🐂 Bullish' : '🐻 Bearish')
     : 'Pending'
 
   return {
-    title: `${game.ticker} · ${outcome} — 4H Game`,
-    description: `AI called ${game.ai_call?.toUpperCase()} on ${game.ticker}. See how it played out.`,
+    title: `${game.ticker} · ${outcome} — CallTheCandle`,
+    description: `AI called ${game.ai_call?.toUpperCase()} on ${game.ticker}. Can you beat the AI?`,
     openGraph: {
-      title: `${game.ticker} · ${outcome} — 4H Game`,
+      title: `${game.ticker} · ${outcome} — CallTheCandle`,
       description: `AI called ${game.ai_call?.toUpperCase()} on ${game.ticker}. Can you beat the AI?`,
-      siteName: '4H Game',
+      siteName: 'CallTheCandle',
     },
     twitter: {
-      card: 'summary',
-      title: `${game.ticker} · ${outcome} — 4H Game`,
+      card: 'summary_large_image',
+      title: `${game.ticker} · ${outcome} — CallTheCandle`,
       description: `AI called ${game.ai_call?.toUpperCase()} on ${game.ticker}. Can you beat the AI?`,
     },
   }
@@ -79,7 +79,7 @@ export default async function SharePage(
         {/* Header */}
         <div className="text-center mb-6">
           <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
-            4H Game
+            CallTheCandle
           </Link>
         </div>
 
@@ -175,7 +175,7 @@ export default async function SharePage(
             href="/play"
             className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-400 text-black font-semibold px-6 py-2.5 rounded-lg transition-colors text-sm"
           >
-            Play 4H Game →
+            Play CallTheCandle →
           </Link>
         </div>
       </div>

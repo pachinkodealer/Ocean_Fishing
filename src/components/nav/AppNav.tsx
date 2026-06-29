@@ -24,7 +24,7 @@ export function AppNav({ username, points, streak }: AppNavProps) {
         {/* Brand */}
         <Link href="/dashboard" className="flex items-center gap-2 shrink-0 group">
           <span className="w-2 h-2 rounded-full bg-primary group-hover:shadow-[0_0_8px_var(--primary)] transition-shadow" />
-          <span className="font-bold text-base tracking-tight">4H Game</span>
+          <span className="font-bold text-base tracking-tight">CallTheCandle</span>
         </Link>
 
         {/* Links */}

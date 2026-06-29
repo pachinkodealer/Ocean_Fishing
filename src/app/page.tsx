@@ -15,7 +15,7 @@ export default function LandingPage() {
         <nav className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
           <span className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
-            <span className="font-bold text-xl tracking-tight text-white">4H Game</span>
+            <span className="font-bold text-xl tracking-tight text-white">CallTheCandle</span>
           </span>
           <div className="flex gap-3">
             <Link href="/login" className="px-4 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors rounded-lg">
@@ -36,13 +36,13 @@ export default function LandingPage() {
               ⚡ Free to play · No credit card required
             </span>
             <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight leading-tight">
-              Spot the Setup.<br />
+              Call the candle.<br />
               <span className="text-green-400">Beat the AI.</span>
             </h1>
             <p className="text-lg text-zinc-400 leading-relaxed">
-              Train your eyes to see setups faster — without risking a single dollar.
-              Live ETH Perps setups, auto-detected. AI maps the key levels and makes its call.
-              You make yours. Scored in as little as 15 minutes.
+              Bull or bear on live crypto setups — scored in minutes.
+              The AI maps the key levels and makes its call. You make yours.
+              No money at risk.
             </p>
             <div className="flex gap-4 flex-wrap">
               <Link href="/signup" className="px-6 py-3 text-sm font-semibold bg-green-500 hover:bg-green-400 text-black rounded-lg transition-colors">
@@ -267,7 +267,7 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t bg-background px-6 py-5 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-muted-foreground">
-        <span className="font-mono font-semibold">4H Game</span>
+        <span className="font-mono font-semibold">CallTheCandle</span>
         <div className="flex gap-4">
           <Link href="/leaderboard" className="hover:text-foreground transition-colors">Leaderboard</Link>
           <Link href="/login" className="hover:text-foreground transition-colors">Sign In</Link>

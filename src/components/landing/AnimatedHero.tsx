@@ -22,7 +22,7 @@ export function AnimatedHero() {
       <div className="flex items-start justify-between mb-2.5">
         <div>
           <p className="text-[17px] font-semibold text-white tracking-tight leading-none">Beat the AI.</p>
-          <p className="text-[11px] text-zinc-600 mt-1">Call the setup. No money at risk.</p>
+          <p className="text-[11px] text-zinc-600 mt-1">Call the candle. No money at risk.</p>
         </div>
         <p className="ah-score text-right font-mono text-[11px] text-zinc-600 leading-tight">
           You <span className="text-green-400 font-medium">7</span> · <span className="text-red-400 font-medium">AI 5</span><br />this week
