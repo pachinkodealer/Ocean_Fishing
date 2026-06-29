@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton'
 
 export default function SignupPage() {
   const router = useRouter()
@@ -46,6 +47,11 @@ export default function SignupPage() {
           <CardDescription>Join the game — call the market, beat the AI</CardDescription>
         </CardHeader>
         <CardContent>
+          <GoogleSignInButton label="Sign up with Google" />
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><span className="w-full border-t border-border" /></div>
+            <div className="relative flex justify-center text-xs"><span className="bg-card px-2 text-muted-foreground">or</span></div>
+          </div>
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="username">Username</Label>
