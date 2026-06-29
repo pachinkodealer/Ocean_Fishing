@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { createServiceClient } from '@/lib/supabase/server'
 import type { Metadata } from 'next'
 import Link from 'next/link'
+import { AmbientBackground } from '@/components/ui/ambient-background'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ gameId: string }> }
@@ -74,8 +75,9 @@ export default async function SharePage(
     : null
 
   return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-4">
+    <div className="relative min-h-screen bg-zinc-950 flex flex-col items-center justify-center p-4">
+      <AmbientBackground />
+      <div className="relative z-10 w-full max-w-md space-y-4">
         {/* Header */}
         <div className="text-center mb-6">
           <Link href="/" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">

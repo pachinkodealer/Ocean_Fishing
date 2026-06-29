@@ -9,10 +9,25 @@ export default function LandingPage() {
     <div className="min-h-screen flex flex-col">
 
       {/* ── Dark hero section ── */}
-      <div className="bg-zinc-950 text-white flex flex-col">
+      <div className="relative overflow-hidden bg-zinc-950 text-white flex flex-col">
+
+        {/* Ambient depth — faint trading grid + soft glow behind the hero */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(55% 55% at 74% 32%, rgba(0,186,116,0.13), transparent 70%),' +
+              'linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),' +
+              'linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)',
+            backgroundSize: '100% 100%, 46px 46px, 46px 46px',
+            maskImage: 'radial-gradient(125% 90% at 50% 18%, black 55%, transparent 100%)',
+            WebkitMaskImage: 'radial-gradient(125% 90% at 50% 18%, black 55%, transparent 100%)',
+          }}
+        />
 
         {/* Nav */}
-        <nav className="border-b border-white/10 px-6 py-4 flex items-center justify-between">
+        <nav className="relative z-10 border-b border-white/10 px-6 py-4 flex items-center justify-between">
           <span className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-green-500" />
             <span className="font-bold text-xl tracking-tight text-white">CallTheCandle</span>
@@ -28,7 +43,7 @@ export default function LandingPage() {
         </nav>
 
         {/* Hero */}
-        <section className="flex flex-col lg:flex-row items-center justify-center gap-16 px-6 py-24 max-w-6xl mx-auto w-full">
+        <section className="relative z-10 flex flex-col lg:flex-row items-center justify-center gap-16 px-6 py-24 max-w-6xl mx-auto w-full">
 
           {/* Left — copy */}
           <div className="flex flex-col items-start space-y-6 max-w-xl">
